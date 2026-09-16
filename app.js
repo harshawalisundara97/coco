@@ -1,95 +1,87 @@
-/* Coco Ceylon storefront — no framework, no build step.
+/* KussiAmma.lk storefront — no framework, no build step.
    Cart state lives in localStorage so a refresh mid-order is survivable.
-   Orders leave the page by email; card payment is deliberately not here yet. */
+   Orders leave the page by email; there is no card payment anywhere. */
 (() => {
   'use strict';
 
   /* ══ CONFIGURE ME ══════════════════════════════════════════════════════
-     Everything the seller needs to change lives in this one block.        */
+     Everything the seller changes lives in this one block.                */
   const SELLER = {
-    email: 'orders@cococeylon.lk',        // where order emails land
-    phone: '+94112345678',                // tel: link
-    phoneLabel: '+94 11 234 5678',
+    email: 'orders@kussiamma.lk',         // where order emails land
+    phone: '+94771234567',                // tel: link
+    phoneLabel: '+94 77 123 4567',
     whatsapp: '94771234567',              // country code + number, no +
     bank: {
       bank: 'Commercial Bank of Ceylon',
-      name: 'Coco Ceylon (Pvt) Ltd',
+      name: 'KussiAmma (Pvt) Ltd',
       account: '8001 2345 67',
-      branch: 'Colombo 05 (005)'
+      branch: 'Nugegoda (038)'
     }
   };
 
   /* Leave empty and the order opens a pre-filled email draft in the
      customer's mail app. Paste a form-relay endpoint here — e.g.
-     'https://formsubmit.co/ajax/orders@cococeylon.lk' — and the order is
-     POSTed straight to the seller's inbox with no draft to send.
-     A real payment gateway replaces this step later. */
+     'https://formsubmit.co/ajax/orders@kussiamma.lk' — and the order is
+     POSTed straight to the seller's inbox with no draft to send. */
   const ORDER_ENDPOINT = '';
 
-  const SHIPPING = 450;
-  const FREE_OVER = 6000;
-  const STORE_KEY = 'coco-ceylon-cart';
-  /* ═════════════════════════════════════════════════════════════════════ */
+  const SHIPPING = 300;
+  const FREE_OVER = 3000;
+  const STORE_KEY = 'kussiamma-cart';
 
-  /* ⚠ PRICES BELOW ARE PLACEHOLDERS — replace every `price` with your real
-     one, and the pack sizes in `unit` if yours differ. */
+  /* ⚠ PRICES BELOW ARE PLACEHOLDERS — grated coconut is priced at a flat
+     Rs 1,000 per kilo, which the packs section states in so many words.
+     Change both together if your real pricing differs. */
   const PRODUCTS = [
     {
-      id: 'grated-100g',
-      name: 'Fresh grated coconut — 100 g',
-      note: 'One-meal pack. Enough for a pol sambol without opening a bigger bag.',
-      price: 180, unit: '100 g', cat: 'grated', tag: 'Single use',
+      id: 'grated-100g', group: 'grated',
+      name: '100 g packet', unit: '100 g', price: 100,
+      desc: 'One-meal packet. Enough for a pol sambol without opening a bigger bag.',
       img: 'assets/photos/pack-100g.jpg'
     },
     {
-      id: 'grated-250g',
-      name: 'Fresh grated coconut — 250 g',
-      note: 'The week-to-week size for a small kitchen. Resealable pouch.',
-      price: 390, unit: '250 g', cat: 'grated', tag: 'Most popular',
+      id: 'grated-250g', group: 'grated',
+      name: '250 g packet', unit: '250 g', price: 250,
+      desc: 'A week of home cooking. Resealable top, so it stays dry between uses.',
       img: 'assets/photos/pack-250g.jpg'
     },
     {
-      id: 'grated-500g',
-      name: 'Fresh grated coconut — 500 g',
-      note: 'Family size. Baking, sambol, curry and sweets from one pouch.',
-      price: 690, unit: '500 g', cat: 'grated', tag: 'Family size',
+      id: 'grated-500g', group: 'grated',
+      name: '500 g pouch', unit: '500 g', price: 500,
+      desc: 'The size most households reorder. Sambol, curry, baking and sweets from one pouch.',
       img: 'assets/photos/pack-500g.jpg'
     },
     {
-      id: 'grated-1kg',
-      name: 'Fresh grated coconut — 1 kg',
-      note: 'Catering pack for kitchens, bakeries and caterers. Best value per kilo.',
-      price: 1250, unit: '1 kg', cat: 'grated', tag: 'Best value',
+      id: 'grated-1kg', group: 'grated',
+      name: '1 kg pack', unit: '1 kg', price: 1000,
+      desc: 'Kitchen and small-restaurant size. Take four or more and ask us for the trade rate.',
       img: 'assets/photos/pack-1kg.jpg'
     },
     {
-      id: 'milk-400',
-      name: 'Coconut milk — 400 ml',
-      note: 'First press, thick. No gums, no stabilisers, no preservatives.',
-      price: 480, unit: '400 ml', cat: 'milk', tag: 'First press',
-      img: 'assets/photos/milk-400.jpg'
-    },
-    {
-      id: 'milk-200',
-      name: 'Coconut milk — 200 ml',
-      note: 'Single-cook size, so an opened pack never goes to waste.',
-      price: 280, unit: '200 ml', cat: 'milk', tag: 'Handy size',
+      id: 'milk-200', group: 'milk',
+      name: 'Coconut milk — 200 ml', unit: '200 ml', price: 280,
+      desc: 'Single-cook size, so an opened pack never goes to waste.',
       img: 'assets/photos/milk-200.jpg'
     },
     {
-      id: 'milk-1l',
-      name: 'Coconut milk — 1 litre',
-      note: 'Catering pack for kitchens and caterers. The same first-press milk.',
-      price: 1090, unit: '1 litre', cat: 'milk', tag: 'Catering',
+      id: 'milk-400', group: 'milk',
+      name: 'Coconut milk — 400 ml', unit: '400 ml', price: 480,
+      desc: 'First press, thick. No gums, no stabilisers, no preservatives.',
+      img: 'assets/photos/milk-400.jpg'
+    },
+    {
+      id: 'milk-1l', group: 'milk',
+      name: 'Coconut milk — 1 litre', unit: '1 litre', price: 1090,
+      desc: 'Catering pack for kitchens and caterers. The same first-press milk.',
       img: 'assets/photos/milk-1l.jpg'
     }
   ];
 
-  const CATEGORIES = [
-    { id: 'all', label: 'Everything' },
-    { id: 'grated', label: 'Grated coconut' },
-    { id: 'milk', label: 'Coconut milk' }
+  const GROUPS = [
+    { id: 'grated', label: 'Fresh grated coconut', eyebrow: 'Fresh grated coconut' },
+    { id: 'milk', label: 'Coconut milk', eyebrow: 'Coconut milk' }
   ];
+  /* ═════════════════════════════════════════════════════════════════════ */
 
   const $ = (sel) => document.querySelector(sel);
   const byId = (id) => PRODUCTS.find((p) => p.id === id);
@@ -97,14 +89,11 @@
 
   /** cart: { [productId]: qty } */
   let cart = load();
-  let filter = 'all';
-  // Only the first paint animates in; a filter change should feel instant.
-  let gridPainted = false;
 
   function load() {
     try {
       const raw = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
-      // Drop anything that no longer exists in the menu.
+      // Drop anything that no longer exists in the list.
       return Object.fromEntries(
         Object.entries(raw).filter(([id, qty]) => byId(id) && Number(qty) > 0)
       );
@@ -123,156 +112,84 @@
   const shipping = () => (itemCount() === 0 || subtotal() >= FREE_OVER ? 0 : SHIPPING);
   const total = () => subtotal() + shipping();
 
-  /* ── Product grid ──────────────────────────────────────────────────── */
+  /* ── Packs ─────────────────────────────────────────────────────────── */
 
-  function renderFilters() {
-    $('#filters').innerHTML = CATEGORIES.map((c) => `
-      <button class="chip${c.id === filter ? ' is-active' : ''}" data-cat="${c.id}"
-              aria-pressed="${c.id === filter}">${c.label}</button>
-    `).join('');
-  }
-
-  function renderGrid() {
-    const list = PRODUCTS.filter((p) => filter === 'all' || p.cat === filter);
-    const grid = $('#grid');
-
-    if (!list.length) {
-      grid.innerHTML = '<p class="empty-note">Nothing in this category yet.</p>';
-      return;
-    }
-
-    grid.innerHTML = list.map((p) => {
-      const qty = cart[p.id] || 0;
+  function renderPacks() {
+    $('#packGroups').innerHTML = GROUPS.map((g) => {
+      const items = PRODUCTS.filter((p) => p.group === g.id);
+      if (!items.length) return '';
       return `
-        <article class="card${gridPainted ? "" : " reveal"}">
-          <div class="card-media">
-            <span class="card-tag">${p.tag}</span>
-            <img src="${p.img}" alt="${p.name}" loading="lazy">
+        <div class="pack-group">
+          <h3>${g.label}</h3>
+          <div class="packs">
+            ${items.map((p) => `
+              <article class="pack">
+                <div class="pack-photo">
+                  <img src="${p.img}" alt="${p.name}" loading="lazy" width="820" height="820">
+                </div>
+                <p class="eyebrow">${g.eyebrow}</p>
+                <h3>${p.name}</h3>
+                <p class="desc">${p.desc}</p>
+                <div class="pack-foot">
+                  <span class="price">${rupees(p.price)}<small>per ${p.unit}</small></span>
+                  <div class="stepper">
+                    <button type="button" data-step="-1" data-id="${p.id}" aria-label="One fewer ${p.name}">–</button>
+                    <span class="qty" aria-live="polite">${cart[p.id] || 0}</span>
+                    <button type="button" data-step="1" data-id="${p.id}" aria-label="One more ${p.name}">+</button>
+                  </div>
+                </div>
+              </article>`).join('')}
           </div>
-          <div class="card-body">
-            <h3>${p.name}</h3>
-            <p class="card-note">${p.note}</p>
-            <div class="card-foot">
-              <span class="price">${rupees(p.price)} <small>/ ${p.unit}</small></span>
-              <button class="add-btn${qty ? ' is-added' : ''}" data-add="${p.id}">
-                ${qty ? `In cart · ${qty}` : 'Add to cart'}
-              </button>
-            </div>
-          </div>
-        </article>`;
+        </div>`;
     }).join('');
-
-    gridPainted = true;
-    observeReveals();
   }
 
-  /* ── Cart drawer ───────────────────────────────────────────────────── */
+  /** Update just the readouts, so a stepper press does not rebuild the grid. */
+  function syncSteppers() {
+    document.querySelectorAll('.stepper').forEach((s) => {
+      const id = s.querySelector('[data-step]').dataset.id;
+      s.querySelector('.qty').textContent = cart[id] || 0;
+    });
+  }
 
-  function renderCart() {
+  /* ── Order summary, cart bar ───────────────────────────────────────── */
+
+  function renderSummary() {
     const count = itemCount();
-    const badge = $('#cartCount');
-    badge.textContent = count;
-    badge.classList.toggle('is-empty', count === 0);
+    const box = $('#sumLines');
 
-    const body = $('#cartBody');
-    const foot = $('#cartFoot');
-
-    if (!count) {
-      foot.hidden = true;
-      body.innerHTML = `
-        <div class="cart-empty">
-          <img src="assets/king-coconut.svg" alt="">
-          <p>Your cart is empty.<br>Pick something from the menu.</p>
-        </div>`;
-      return;
-    }
-
-    foot.hidden = false;
-    body.innerHTML = lines().map(({ product: p, qty }) => `
-      <div class="line">
-        <div class="line-media"><img src="${p.img}" alt="" width="48" height="48"></div>
-        <div>
-          <h4>${p.name}</h4>
-          <p>${rupees(p.price)} / ${p.unit}</p>
-          <div class="stepper">
-            <button data-step="-1" data-id="${p.id}" aria-label="One fewer ${p.name}">−</button>
-            <span>${qty}</span>
-            <button data-step="1" data-id="${p.id}" aria-label="One more ${p.name}">+</button>
-          </div>
-        </div>
-        <span class="line-price">${rupees(p.price * qty)}</span>
-      </div>
-    `).join('');
+    box.innerHTML = count
+      ? lines().map(({ product: p, qty }) => `
+          <div class="line">
+            <span>${p.name} × ${qty}</span>
+            <span>${rupees(p.price * qty)}</span>
+          </div>`).join('')
+      : '<p class="sum-empty">Nothing chosen yet. Pick a pack below and it appears here.</p>';
 
     $('#sumSubtotal').textContent = rupees(subtotal());
-    $('#sumShipping').textContent = shipping() === 0 ? 'Free' : rupees(shipping());
+    // With an empty cart, show the standing rate rather than a misleading Rs 0.
+    $("#sumShipping").textContent = !count ? rupees(SHIPPING)
+      : shipping() === 0 ? "Free" : rupees(shipping());
     $('#sumTotal').textContent = rupees(total());
 
     const gap = FREE_OVER - subtotal();
-    $('#shipHint').textContent = gap > 0
-      ? `Add ${rupees(gap)} more for free delivery.`
-      : 'Free delivery unlocked.';
+    $('#shipHint').textContent = !count ? ''
+      : gap > 0 ? `Add ${rupees(gap)} more and delivery is free.`
+      : 'Delivery is free on this order.';
+
+    const bar = $('#cartbar');
+    bar.classList.toggle('is-open', count > 0);
+    $('#barCount').textContent = `${count} pack${count === 1 ? '' : 's'}`;
+    $('#barTotal').textContent = `${rupees(total())} · pay on delivery`;
   }
 
   function setQty(id, qty) {
     if (qty <= 0) delete cart[id];
     else cart[id] = Math.min(qty, 99);
     save();
-    renderCart();
-    renderGrid();
-  }
-
-  /* ── Overlays ──────────────────────────────────────────────────────── */
-
-  const drawer = $('#drawer');
-  const modal = $('#modal');
-  const scrim = $('#scrim');
-
-  const anyOpen = () =>
-    drawer.classList.contains('is-open') || modal.classList.contains('is-open');
-
-  function syncScrim() {
-    scrim.classList.toggle('is-open', anyOpen());
-    document.body.classList.toggle('is-locked', anyOpen());
-  }
-
-  function openDrawer() {
-    drawer.classList.add('is-open');
-    drawer.setAttribute('aria-hidden', 'false');
-    syncScrim();
-    $('#cartClose').focus();
-  }
-
-  function closeDrawer() {
-    drawer.classList.remove('is-open');
-    drawer.setAttribute('aria-hidden', 'true');
-    syncScrim();
-  }
-
-  function openModal() {
-    if (!itemCount()) { toast('Add something to your cart first'); return; }
-    $('#checkoutView').hidden = false;
-    $('#successView').hidden = true;
-    renderRecap();
-    modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden', 'false');
-    closeDrawer();
-    syncScrim();
-    $('#name').focus();
-  }
-
-  function closeModal() {
-    modal.classList.remove('is-open');
-    modal.setAttribute('aria-hidden', 'true');
-    syncScrim();
-  }
-
-  function renderRecap() {
-    $('#recap').innerHTML = `
-      ${lines().map(({ product: p, qty }) =>
-        `<div><span>${p.name} × ${qty}</span><span>${rupees(p.price * qty)}</span></div>`).join('')}
-      <div><span>Delivery</span><span>${shipping() === 0 ? 'Free' : rupees(shipping())}</span></div>
-      <div><span>Total</span><span>${rupees(total())}</span></div>`;
+    syncSteppers();
+    renderSummary();
+    if (itemCount()) $('#cartErr').style.display = 'none';
   }
 
   let toastTimer;
@@ -281,7 +198,37 @@
     el.textContent = message;
     el.classList.add('is-open');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('is-open'), 2200);
+    toastTimer = setTimeout(() => el.classList.remove('is-open'), 2000);
+  }
+
+  /* ── Hero rotator ──────────────────────────────────────────────────── */
+
+  function initRotator() {
+    const photos = [...document.querySelectorAll('.hero-photo')];
+    const controls = $('#rotator');
+    if (photos.length < 2) return;
+
+    controls.innerHTML = photos.map((_, i) => `
+      <button type="button" aria-label="Show photograph ${i + 1}"${i === 0 ? ' class="is-active"' : ''}>
+        <span></span>
+      </button>`).join('');
+
+    const buttons = [...controls.children];
+    let index = 0;
+
+    const show = (next) => {
+      index = next;
+      photos.forEach((p, i) => p.classList.toggle('is-active', i === index));
+      buttons.forEach((b, i) => b.classList.toggle('is-active', i === index));
+    };
+
+    // Auto-rotation is a convenience, not the control; a click takes over.
+    let timer = setInterval(() => show((index + 1) % photos.length), 6000);
+    buttons.forEach((b, i) => b.addEventListener('click', () => {
+      clearInterval(timer);
+      timer = null;
+      show(i);
+    }));
   }
 
   /* ── Checkout ──────────────────────────────────────────────────────── */
@@ -305,9 +252,8 @@
     return !firstBad;
   }
 
-  const orderNumber = () => 'CC-' + Math.random().toString(36).slice(2, 7).toUpperCase();
+  const orderNumber = () => 'KA-' + Math.random().toString(36).slice(2, 7).toUpperCase();
 
-  /** Everything the seller needs, as one readable email body. */
   function buildOrder(form) {
     const d = new FormData(form);
     return {
@@ -318,6 +264,7 @@
       email: (d.get('email') || '').trim(),
       city: d.get('city').trim(),
       address: d.get('address').trim(),
+      postal: (d.get('postal') || '').trim(),
       slot: d.get('slot'),
       pay: d.get('pay'),
       notes: (d.get('notes') || '').trim(),
@@ -332,8 +279,8 @@
 
   function orderText(o) {
     const rows = o.items
-      // Pack sizes like "400 ml" are often already in the name — do not repeat them.
-      .map((i) => `  • ${i.name}${i.name.includes(i.unit) ? "" : ` (${i.unit})`} × ${i.qty} — ${rupees(i.line)}`)
+      // Pack sizes are often already in the name — do not repeat them.
+      .map((i) => `  • ${i.name}${i.name.includes(i.unit) ? '' : ` (${i.unit})`} × ${i.qty} — ${rupees(i.line)}`)
       .join('\n');
     return [
       `NEW ORDER ${o.ref}`,
@@ -342,18 +289,19 @@
       'ITEMS',
       rows,
       '',
-      `Subtotal: ${rupees(o.subtotal)}`,
+      `Packs:    ${rupees(o.subtotal)}`,
       `Delivery: ${o.shipping === 0 ? 'Free' : rupees(o.shipping)}`,
       `TOTAL:    ${rupees(o.total)}`,
       `Payment:  ${o.pay}`,
       '',
       'CUSTOMER',
       `Name:    ${o.name}`,
-      `Mobile:  ${o.phone}`,
+      `Phone:   ${o.phone}`,
       o.email ? `Email:   ${o.email}` : null,
       `City:    ${o.city}`,
       `Address: ${o.address}`,
-      `Window:  ${o.slot}`,
+      o.postal ? `Postal:  ${o.postal}` : null,
+      `Run:     ${o.slot}`,
       o.notes ? `Notes:   ${o.notes}` : null
     ].filter(Boolean).join('\n');
   }
@@ -368,7 +316,7 @@
 
   /** POST to the relay if one is configured; the email draft is the fallback. */
   async function deliverOrder(o) {
-    if (!ORDER_ENDPOINT) return { sent: false, reason: 'no-endpoint' };
+    if (!ORDER_ENDPOINT) return { sent: false };
     try {
       const res = await fetch(ORDER_ENDPOINT, {
         method: 'POST',
@@ -379,127 +327,87 @@
           summary: orderText(o)
         })
       });
-      return { sent: res.ok, reason: res.ok ? 'relay' : 'relay-failed' };
+      return { sent: res.ok };
     } catch {
-      return { sent: false, reason: 'relay-failed' };
+      return { sent: false };
     }
   }
 
-  function showSuccess(o, delivered) {
-    $('#orderNo').textContent = o.ref;
-    $('#successMeta').textContent =
-      `${o.items.reduce((a, i) => a + i.qty, 0)} item(s) · ${rupees(o.total)} · ${o.pay} · ${o.slot}`;
+  const bankRows = () => {
+    const b = SELLER.bank;
+    return `
+      <div><span>Bank</span><span>${b.bank}</span></div>
+      <div><span>Account name</span><span>${b.name}</span></div>
+      <div><span>Account no.</span><span>${b.account}</span></div>
+      <div><span>Branch</span><span>${b.branch}</span></div>`;
+  };
 
-    $('#successLead').textContent = delivered
-      ? 'Your order is in the seller’s inbox. We’ll call to confirm the delivery window.'
-      : 'Your email app is opening with the order filled in — press send and it reaches the seller. Prefer to talk? Call or WhatsApp instead.';
+  function showConfirmation(o, delivered) {
+    const day = o.slot.split(',')[0];
+    $('#formPanel').innerHTML = `
+      <div class="confirm">
+        <p class="kicker">Order received</p>
+        <p class="order-id">${o.ref}</p>
+        <p class="lede">
+          Thank you, ${o.name}. We will call ${o.phone} to confirm the
+          ${day} run. Keep ${rupees(o.total)} ready for the delivery man.
+        </p>
+        ${delivered ? '' : `
+          <p class="lede"><strong>One more step:</strong> your email app is opening with the
+          order filled in — press send and it reaches us. Prefer to talk? Call or WhatsApp.</p>`}
+        ${o.pay === 'Bank transfer' ? `<div class="bank-box">${bankRows()}</div>` : ''}
+        <div class="confirm-to">
+          <strong>Delivering to</strong><br>
+          ${o.address}${o.postal ? ', ' + o.postal : ''}<br>${o.city}
+        </div>
+        <div class="confirm-actions">
+          ${delivered ? '' : `<a class="btn btn--primary" href="${mailtoFor(o)}">Send the order email</a>`}
+          <a class="btn btn--ghost" href="${whatsappFor(o)}" target="_blank" rel="noopener">WhatsApp it</a>
+          <a class="btn btn--ghost" href="tel:${SELLER.phone}">Call us</a>
+          <button class="btn btn--ghost" type="button" id="againBtn">Place another order</button>
+        </div>
+      </div>`;
 
-    $('#bankPanel').hidden = o.pay !== 'Bank transfer';
-    $('#mailAgain').href = mailtoFor(o);
-    $('#waAgain').href = whatsappFor(o);
-    $('#callAgain').href = 'tel:' + SELLER.phone;
-
-    $('#checkoutView').hidden = true;
-    $('#successView').hidden = false;
+    $('#againBtn').addEventListener('click', () => location.reload());
   }
-
-  /* ── Scroll reveal + nav highlighting ──────────────────────────────── */
-
-  const revealObserver = 'IntersectionObserver' in window
-    ? new IntersectionObserver((entries, obs) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) { e.target.classList.add('is-in'); obs.unobserve(e.target); }
-        });
-      }, { rootMargin: '0px 0px -8% 0px' })
-    : null;
-
-  function observeReveals() {
-    document.querySelectorAll('.reveal:not(.is-in)').forEach((el) => {
-      if (revealObserver) revealObserver.observe(el);
-      else el.classList.add('is-in');
-    });
-  }
-
-  const sectionObserver = 'IntersectionObserver' in window
-    ? new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          document.querySelectorAll('.nav a').forEach((a) => {
-            a.classList.toggle('is-active', a.getAttribute('href') === '#' + e.target.id);
-          });
-        });
-      }, { rootMargin: '-45% 0px -50% 0px' })
-    : null;
 
   /* ── Seller details into the markup ────────────────────────────────── */
 
   function paintSeller() {
     document.querySelectorAll('[data-seller="phone"]').forEach((el) => {
       el.textContent = SELLER.phoneLabel;
-      if (el.tagName === 'A') el.href = 'tel:' + SELLER.phone;
     });
     document.querySelectorAll('[data-seller="tel"]').forEach((el) => { el.href = 'tel:' + SELLER.phone; });
     document.querySelectorAll('[data-seller="wa"]').forEach((el) => { el.href = 'https://wa.me/' + SELLER.whatsapp; });
     document.querySelectorAll('[data-seller="email"]').forEach((el) => {
       el.textContent = SELLER.email;
-      if (el.tagName === 'A') el.href = 'mailto:' + SELLER.email;
+      el.href = 'mailto:' + SELLER.email;
     });
+    document.querySelectorAll('[data-bank]').forEach((el) => { el.innerHTML = bankRows(); });
 
-    const b = SELLER.bank;
-    document.querySelectorAll('[data-bank]').forEach((el) => {
-      el.innerHTML = `
-        <div><span>Bank</span><span>${b.bank}</span></div>
-        <div><span>Account name</span><span>${b.name}</span></div>
-        <div><span>Account no.</span><span>${b.account}</span></div>
-        <div><span>Branch</span><span>${b.branch}</span></div>`;
-    });
+    // The delivery figures are stated in three places; keep them in step.
+    $('#statFree').textContent = rupees(FREE_OVER);
+    $('#deliveryCopy').textContent =
+      `Packs plus ${rupees(SHIPPING)} delivery. Free above ${rupees(FREE_OVER)}. ` +
+      'Cash at the door or bank transfer.';
+    $('#sumShipping').textContent = rupees(SHIPPING);
   }
 
   /* ── Wiring ────────────────────────────────────────────────────────── */
 
   function init() {
     paintSeller();
-    renderFilters();
-    renderGrid();
-    renderCart();
-    observeReveals();
+    renderPacks();
+    renderSummary();
+    initRotator();
 
-    $('#filters').addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-cat]');
-      if (!btn) return;
-      filter = btn.dataset.cat;
-      renderFilters();
-      renderGrid();
-    });
-
-    $('#grid').addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-add]');
-      if (!btn) return;
-      const p = byId(btn.dataset.add);
-      setQty(p.id, (cart[p.id] || 0) + 1);
-      toast(`${p.name} added to your cart`);
-    });
-
-    $('#cartBody').addEventListener('click', (e) => {
+    $('#packGroups').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-step]');
       if (!btn) return;
       const id = btn.dataset.id;
-      setQty(id, (cart[id] || 0) + Number(btn.dataset.step));
-    });
-
-    $('#cartOpen').addEventListener('click', openDrawer);
-    $('#cartClose').addEventListener('click', closeDrawer);
-    $('#checkoutOpen').addEventListener('click', openModal);
-    $('#modalClose').addEventListener('click', closeModal);
-    $('#successClose').addEventListener('click', closeModal);
-
-    scrim.addEventListener('click', () => { closeModal(); closeDrawer(); });
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape') return;
-      if (modal.classList.contains('is-open')) closeModal();
-      else if (drawer.classList.contains('is-open')) closeDrawer();
+      const step = Number(btn.dataset.step);
+      setQty(id, (cart[id] || 0) + step);
+      if (step > 0) toast(`${byId(id).name} added`);
     });
 
     // Bank details appear inline the moment bank transfer is chosen.
@@ -511,9 +419,15 @@
     $('#checkoutForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const form = e.currentTarget;
+
+      if (!itemCount()) {
+        $('#cartErr').style.display = 'block';
+        document.getElementById('packs').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
       if (!validate(form)) return;
 
-      const submit = form.querySelector('[type="submit"]');
+      const submit = $('#placeOrder');
       submit.disabled = true;
       submit.textContent = 'Sending the order…';
 
@@ -523,27 +437,13 @@
       // Without a relay, hand the customer a pre-filled draft to send.
       if (!sent) window.location.href = mailtoFor(order);
 
-      showSuccess(order, sent);
+      showConfirmation(order, sent);
 
       cart = {};
       save();
-      renderCart();
-      renderGrid();
-      form.reset();
-      $('#bankInline').hidden = true;
-      submit.disabled = false;
-      submit.textContent = 'Place order';
+      renderPacks();
+      renderSummary();
     });
-
-    // Header treatment once the page has scrolled off the top.
-    const header = $('#header');
-    const onScroll = () => header.classList.toggle('is-stuck', window.scrollY > 12);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    if (sectionObserver) {
-      document.querySelectorAll('main section[id]').forEach((s) => sectionObserver.observe(s));
-    }
   }
 
   document.addEventListener('DOMContentLoaded', init);

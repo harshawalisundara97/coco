@@ -3,40 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Coco Ceylon — Fresh grated coconut &amp; first-press coconut milk, delivered</title>
-<meta name="description" content="Order fresh grated coconut in 100g, 250g, 500g and 1kg pouches, and first-press coconut milk in 200ml, 400ml and 1L. Cash on delivery or bank transfer, island-wide in 48 hours.">
-<link rel="icon" href="assets/king-coconut.svg">
-<link rel="stylesheet" href="styles.css?v=2">
+<title>KussiAmma.lk — Fresh grated coconut, cash on delivery</title>
+<meta name="description" content="Fresh grated coconut in 100g, 250g, 500g and 1kg packs, plus first-press coconut milk. Order online, pay cash at the door or by bank transfer. Island-wide delivery.">
+<link rel="icon" href="assets/photos/pack-250g.jpg">
+<link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 
-<header class="site-header" id="header">
-  <div class="wrap">
-    <a class="brand" href="#top">
-      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
-        <circle cx="17" cy="17" r="16" fill="#1e1a15" stroke="#f0a03c" stroke-opacity=".5"/>
-        <circle cx="17" cy="17" r="10" fill="#f0a03c"/>
-        <circle cx="17" cy="17" r="4.6" fill="#12100e"/>
-        <circle cx="13.4" cy="13" r="2" fill="#ffd27a"/>
-      </svg>
-      <span>Coco Ceylon<small>Grove to door</small></span>
-    </a>
-
-    <nav class="nav" aria-label="Primary">
+<!-- ── Navigation ─────────────────────────────────────────────────────── -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">Kussi<span>Amma</span>.lk</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#packs">Packs</a>
       <a href="#order">Order</a>
-      <a href="#story">How it works</a>
-      <a href="#reviews">Reviews</a>
       <a href="#delivery">Delivery</a>
+      <a href="#bulk">Bulk</a>
+      <a href="#faq">FAQ</a>
     </nav>
-
-    <a class="head-call" data-seller="tel" href="tel:">
-      ☎ <span data-seller="phone">—</span>
-    </a>
-
-    <button class="cart-btn" id="cartOpen" aria-haspopup="dialog">
-      Cart
-      <span class="cart-count is-empty" id="cartCount">0</span>
-    </button>
+    <a class="btn btn--primary" data-seller="tel" href="tel:">Call <span data-seller="phone">—</span></a>
   </div>
 </header>
 
@@ -44,329 +29,369 @@
 
   <!-- ── Hero ─────────────────────────────────────────────────────────── -->
   <section class="hero">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow">Grated in Kurunegala · Shipped island-wide</p>
-        <h1>Fresh grated coconut, <em>four</em> sizes.</h1>
-        <p class="hero-lede">
-          Two things, done properly. Coconut grated and packed the day it is
-          husked, and milk pressed with nothing added to it. Add to
-          cart, pay cash on delivery or by bank transfer, and we&rsquo;re at
-          your door in 48 hours.
-        </p>
-        <div class="hero-cta">
-          <a class="btn btn--primary" href="#order">Order now</a>
-          <a class="btn btn--ghost" data-seller="tel" href="tel:">☎ Call to order</a>
-        </div>
-        <div class="hero-stats">
-          <div><b>48h</b><span>Island-wide delivery</span></div>
-          <div><b>100g–1kg</b><span>Four pack sizes</span></div>
-          <div><b>0</b><span>Gums or preservatives</span></div>
-        </div>
-      </div>
+    <div class="hero-photo is-active"><img src="assets/photos/hero-1.jpg" alt="Fresh grated coconut pack among coconuts and palm" fetchpriority="high" width="1600" height="1000"></div>
+    <div class="hero-photo"><img src="assets/photos/hero-2.jpg" alt="Grated coconut in a clay bowl on a kitchen table" loading="lazy" width="1600" height="1000"></div>
+    <div class="hero-photo"><img src="assets/photos/hero-3.jpg" alt="Packs of grated coconut with curry spices" loading="lazy" width="1600" height="1000"></div>
+    <div class="hero-photo"><img src="assets/photos/hero-4.jpg" alt="The pack range on a bright kitchen counter" loading="lazy" width="1600" height="1000"></div>
 
-      <div class="hero-art hero-art--photo">
-        <img src="assets/photos/hero.jpg" alt="Fresh grated coconut in 100g, 250g, 500g and 1kg pouches" width="1400" height="1100">
-        <div class="float-tag float-tag--a"><i></i> Grated to order</div>
-        <div class="float-tag float-tag--b"><i></i> Cash on delivery</div>
+    <div class="hero-inner">
+      <div class="wrap">
+        <div class="hero-plate">
+          <p class="kicker">Fresh grated coconut · Sri Lanka</p>
+          <h1>Grated this morning. Cash at your door.</h1>
+          <p class="lede">
+            One product, four pack sizes, one price per kilo. Pick your packs,
+            leave an address, and pay the delivery man in cash — or transfer to
+            the bank if you prefer. No card details anywhere on this page.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn--primary" href="#packs">Choose packs</a>
+            <a class="btn btn--ghost" data-seller="tel" href="tel:">Call <span data-seller="phone">—</span></a>
+          </div>
+        </div>
+        <div class="rotator" id="rotator" role="group" aria-label="Choose hero photograph"></div>
       </div>
     </div>
   </section>
 
-  <!-- ── Ticker ───────────────────────────────────────────────────────── -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>No preservatives</span><span>Cash on delivery</span><span>First press</span><span>Bank transfer</span><span>100g to 1kg</span>
-      <span>No preservatives</span><span>Cash on delivery</span><span>First press</span><span>Bank transfer</span><span>100g to 1kg</span>
-    </div>
-  </div>
-
-  <!-- ── Order ────────────────────────────────────────────────────────── -->
+  <!-- ── Order (buy first, read later) ────────────────────────────────── -->
   <section class="section" id="order">
     <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow">The menu</p>
-          <h2>Pick what you want</h2>
-        </div>
-        <p>Add to cart, checkout in one short form. Free delivery once your cart passes Rs 6,000.</p>
-      </div>
+      <p class="kicker">01 — Place the order</p>
+      <h2>Address in, cash at the door.</h2>
+      <p class="lede" style="margin-bottom:26px">
+        We call to confirm every order before it leaves. Nothing is charged online.
+      </p>
 
-      <div class="filters reveal" id="filters" role="group" aria-label="Filter products"></div>
-      <div class="grid" id="grid"></div>
+      <div class="order-grid">
+        <!-- Form, replaced by the confirmation panel after a valid submit -->
+        <div class="panel" id="formPanel">
+          <form id="checkoutForm" novalidate>
+            <div class="field">
+              <label for="name">Name</label>
+              <input class="input" id="name" name="name" autocomplete="name" placeholder="Who should we ask for?">
+              <span class="err" role="alert">Tell us who to ask for.</span>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="phone">Phone — we call to confirm</label>
+                <input class="input" id="phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX">
+                <span class="err" role="alert">A mobile number of at least 9 digits.</span>
+              </div>
+              <div class="field">
+                <label for="city">City / town</label>
+                <input class="input" id="city" name="city" autocomplete="address-level2" placeholder="Nugegoda">
+                <span class="err" role="alert">We need a city to route the run.</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="address">Delivery address</label>
+              <textarea class="input" id="address" name="address" autocomplete="street-address" placeholder="House number, street, landmark"></textarea>
+              <span class="err" role="alert">An address of at least 10 characters, please.</span>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="postal">Postal code <span class="opt">optional</span></label>
+                <input class="input" id="postal" name="postal" inputmode="numeric" placeholder="10250">
+              </div>
+              <div class="field">
+                <label for="email">Email <span class="opt">optional</span></label>
+                <input class="input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+              </div>
+            </div>
+            <div class="field">
+              <label for="slot">Delivery run</label>
+              <select class="input" id="slot" name="slot">
+                <option>Wednesday, 8 a.m. – 4 p.m.</option>
+                <option>Saturday, 8 a.m. – 4 p.m.</option>
+                <option>Either day, call me first</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="notes">Notes for us <span class="opt">optional</span></label>
+              <textarea class="input" id="notes" name="notes" placeholder="Gate code, leave with security, call on arrival…"></textarea>
+            </div>
+
+            <fieldset>
+              <legend>How you&rsquo;ll pay</legend>
+              <div class="pay-opts">
+                <label class="pay-opt">
+                  <input type="radio" name="pay" value="Cash on delivery" checked>
+                  <span>Cash on delivery</span>
+                </label>
+                <label class="pay-opt">
+                  <input type="radio" name="pay" value="Bank transfer">
+                  <span>Bank transfer</span>
+                </label>
+              </div>
+              <div class="bank-box" id="bankInline" data-bank hidden></div>
+            </fieldset>
+
+            <button class="btn btn--primary btn--block" type="submit" id="placeOrder">Place order</button>
+            <p class="err" id="cartErr" role="alert" style="text-align:center">Choose at least one pack first.</p>
+          </form>
+        </div>
+
+        <!-- Live order summary -->
+        <aside class="panel panel--summary" aria-label="Your order">
+          <p class="kicker">Your order</p>
+          <div class="sum-lines" id="sumLines"></div>
+          <div class="sum-totals">
+            <div><span>Packs</span><span id="sumSubtotal">Rs 0</span></div>
+            <div><span>Delivery</span><span id="sumShipping">Rs 300</span></div>
+            <div class="grand"><span>Total</span><b id="sumTotal">Rs 0</b></div>
+          </div>
+          <p class="ship-hint" id="shipHint"></p>
+        </aside>
+      </div>
     </div>
   </section>
 
-  <!-- ── Story ────────────────────────────────────────────────────────── -->
-  <section class="section story" id="story">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow">How it works</p>
-          <h2>Four steps, no account needed</h2>
-        </div>
-        <p>No sign-up, no card details. Your order reaches the seller the moment you place it.</p>
-      </div>
-      <div class="steps steps--4">
-        <article class="step reveal">
-          <b>1</b>
-          <h3>Add to cart</h3>
-          <p>Pick your items and quantities. The cart keeps itself if you close the tab.</p>
-        </article>
-        <article class="step reveal">
-          <b>2</b>
-          <h3>Fill your details</h3>
-          <p>Name, mobile and address. Choose cash on delivery or bank transfer.</p>
-        </article>
-        <article class="step reveal">
-          <b>3</b>
-          <h3>Order lands in the inbox</h3>
-          <p>The full order is emailed to the seller with a reference number, and we call to confirm.</p>
-        </article>
-        <article class="step reveal">
-          <b>4</b>
-          <h3>We mill, pack and deliver</h3>
-          <p>Grated and pressed to order, packed the same night, at your door within 48 hours.</p>
-        </article>
-      </div>
+  <!-- ── At a glance ──────────────────────────────────────────────────── -->
+  <section class="wrap">
+    <div class="stats">
+      <div class="stat"><b>4 sizes</b><span>100 g · 250 g · 500 g · 1 kg</span></div>
+      <div class="stat"><b>Same day</b><span>Grated the morning it ships</span></div>
+      <div class="stat"><b id="statFree">Rs 3,000</b><span>Order above this, delivery free</span></div>
+      <div class="stat"><b>COD</b><span>Pay cash at the door</span></div>
     </div>
   </section>
 
-  <!-- ── Payment ──────────────────────────────────────────────────────── -->
-  <section class="section" id="payment">
+  <!-- ── Packs ────────────────────────────────────────────────────────── -->
+  <section class="section" id="packs">
     <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow">Paying</p>
-          <h2>Two ways, both simple</h2>
-        </div>
-        <p>Card checkout is coming. Until then nothing sensitive is typed into this page.</p>
-      </div>
-      <div class="pay-cards">
-        <article class="pay-card reveal">
-          <h3>Cash on delivery</h3>
-          <p class="muted">Pay the driver when the order arrives. Available island-wide, no deposit for orders under Rs 20,000.</p>
-        </article>
-        <article class="pay-card reveal">
-          <h3>Bank transfer</h3>
-          <p class="muted">Transfer after you place the order, then send the slip on WhatsApp. We dispatch as soon as it clears.</p>
-          <div class="bank-box" data-bank></div>
-        </article>
-      </div>
-      <p class="call-strip reveal">
-        Rather not order online? Call
-        <a data-seller="tel" href="tel:"><b data-seller="phone">—</b></a>
-        or message us on <a data-seller="wa" href="#" target="_blank" rel="noopener">WhatsApp</a> and we&rsquo;ll take it down for you.
+      <p class="kicker">02 — Pick your packs</p>
+      <h2>One product, four sizes. Rs 1,000 per kilo, whichever you take.</h2>
+      <div id="packGroups"></div>
+      <p class="footnote">
+        Keep grated coconut sealed and cold. Use within three days of delivery,
+        or freeze the pack whole on the day it arrives.
       </p>
     </div>
   </section>
 
-  <!-- ── Reviews ──────────────────────────────────────────────────────── -->
-  <section class="section story" id="reviews">
+  <!-- ── Why buy from us ──────────────────────────────────────────────── -->
+  <section class="section" style="background:var(--color-surface)">
     <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow">Reviews</p>
-          <h2>What the island says</h2>
+      <p class="kicker">Why buy from us</p>
+      <h2 style="margin-bottom:26px">No scraping, no guessing</h2>
+      <div class="grid-4">
+        <article class="card"><h3>No scraping, no grating</h3><p>The nut is husked, split and grated for you. You open a pack and cook.</p></article>
+        <article class="card"><h3>Graded and weighed</h3><p>Every pack is weighed, not scooped. A kilo is a kilo, sealed and dated.</p></article>
+        <article class="card"><h3>One price per kilo</h3><p>Rs 1,000 a kilo at every size. The small pack is not punished.</p></article>
+        <article class="card"><h3>We call before we come</h3><p>No order leaves without a phone call. Change it or cancel on that call.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How it's made ────────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">How it&rsquo;s made</p>
+      <h2>Three steps, one morning</h2>
+
+      <div class="steps-rows">
+        <div class="step-row">
+          <div class="num">01</div>
+          <h3>Nuts in from the district</h3>
+          <p>Mature nuts arrive from smallholder groves around Kurunegala, husked the day they are picked.</p>
         </div>
-        <p>2,300 delivered orders, 4.9 average. A few recent ones.</p>
+        <div class="step-row">
+          <div class="num">02</div>
+          <h3>Split and grated fresh</h3>
+          <p>Split, the water drained, the white scraped on the same morning your order is packed. Nothing dried, nothing bleached.</p>
+        </div>
+        <div class="step-row">
+          <div class="num">03</div>
+          <h3>Weighed, sealed, date-stamped</h3>
+          <p>Each pack is weighed to size, sealed cold and stamped with the packing date before it goes on the van.</p>
+        </div>
       </div>
-      <div class="reviews">
-        <figure class="review reveal">
-          <div class="stars" aria-label="5 out of 5">★★★★★</div>
-          <blockquote>The 250 g pouch is exactly one week for us, and it reseals properly. No more half-used bags.</blockquote>
-          <figcaption>Amaya P. · Nugegoda · Grated coconut 250 g</figcaption>
+
+      <div class="plates">
+        <figure class="plate">
+          <img src="assets/photos/plate-nuts.jpg" alt="Coconuts and grated coconut in a kitchen" loading="lazy" width="900" height="600">
+          <figcaption>Nuts in from the district</figcaption>
         </figure>
-        <figure class="review reveal">
-          <div class="stars" aria-label="5 out of 5">★★★★★</div>
-          <blockquote>Ordered at night, called back in ten minutes, paid the driver in cash. That simple.</blockquote>
-          <figcaption>Ruwan D. · Kandy · Coconut milk 400 ml</figcaption>
+        <figure class="plate">
+          <img src="assets/photos/plate-grating.jpg" alt="Grated coconut and spices on a work table" loading="lazy" width="900" height="600">
+          <figcaption>Split and grated fresh</figcaption>
         </figure>
-        <figure class="review reveal">
-          <div class="stars" aria-label="4 out of 5">★★★★☆</div>
-          <blockquote>Milk is genuinely thick, no watery separation. Wish the litre pack came in a case of six.</blockquote>
-          <figcaption>Nilanthi S. · Galle · Coconut milk 1 litre</figcaption>
+        <figure class="plate">
+          <img src="assets/photos/plate-packing.jpg" alt="Sealed packs of grated coconut" loading="lazy" width="900" height="600">
+          <figcaption>Weighed, sealed and stamped</figcaption>
         </figure>
       </div>
+    </div>
+  </section>
+
+  <!-- ── The mill ─────────────────────────────────────────────────────── -->
+  <section class="section" style="background:var(--color-surface)">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">The kitchen</p>
+        <h2>Small kitchen, short list, local run</h2>
+        <p class="lede">
+          KussiAmma.lk is a small operation: a handful of people, one product
+          done properly, and a van that goes out twice a week. We would rather
+          sell out by Wednesday than grate on Monday for Friday.
+        </p>
+      </div>
+      <figure class="plate">
+        <img src="assets/photos/plate-mill.jpg" alt="The pack range in the kitchen" loading="lazy" width="900" height="600">
+      </figure>
     </div>
   </section>
 
   <!-- ── Delivery ─────────────────────────────────────────────────────── -->
   <section class="section" id="delivery">
     <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow">Delivery</p>
-          <h2>Where we go</h2>
-        </div>
-        <p>Rs 450 flat within the island, free over Rs 6,000.</p>
+      <p class="kicker">Delivery &amp; cash on delivery</p>
+      <h2 style="margin-bottom:26px">Two runs a week</h2>
+      <div class="grid-4">
+        <article class="card"><h3>Where we deliver</h3><p>Colombo and suburbs on both runs. Elsewhere on the island by courier, one day longer.</p></article>
+        <article class="card"><h3>When it arrives</h3><p>Wednesday and Saturday, 8 a.m. to 4 p.m. We call on the morning of the run.</p></article>
+        <article class="card"><h3>What you pay</h3><p id="deliveryCopy">Packs plus Rs 300 delivery. Free above Rs 3,000. Cash at the door or bank transfer.</p></article>
+        <article class="card"><h3>If something is wrong</h3><p>Check the seal and the packing date before you pay. Anything wrong, hand it back and pay nothing.</p></article>
       </div>
-      <div class="steps">
-        <article class="step reveal"><b>A</b><h3>Colombo &amp; suburbs</h3><p>Next-morning slots, 7am–11am or 4pm–8pm.</p></article>
-        <article class="step reveal"><b>B</b><h3>Kandy, Galle, Negombo</h3><p>Within 24 hours, single afternoon window.</p></article>
-        <article class="step reveal"><b>C</b><h3>Rest of Sri Lanka</h3><p>48 hours by courier, tracked by SMS.</p></article>
+    </div>
+  </section>
+
+  <!-- ── Reviews ──────────────────────────────────────────────────────── -->
+  <section class="section" style="background:var(--color-surface)">
+    <div class="wrap">
+      <p class="kicker">Reviews</p>
+      <h2>What buyers say</h2>
+      <div class="reviews">
+        <figure class="review">
+          <blockquote>&ldquo;The 500 g pouch is exactly our week. No scraping on a work night any more.&rdquo;</blockquote>
+          <figcaption>Home cook · 500 g pouch, monthly</figcaption>
+        </figure>
+        <figure class="review">
+          <blockquote>&ldquo;We take four kilos a week. Weight is honest and the van turns up when they say.&rdquo;</blockquote>
+          <figcaption>Café kitchen · 1 kg packs, weekly</figcaption>
+        </figure>
+        <figure class="review">
+          <blockquote>&ldquo;Ordered at night, called back in the morning, paid the driver in cash. Simple.&rdquo;</blockquote>
+          <figcaption>Repeat buyer · 250 g packets</figcaption>
+        </figure>
+      </div>
+      <p class="placeholder-note">Placeholder copy — replace with real customer quotes before launch.</p>
+    </div>
+  </section>
+
+  <!-- ── Bulk ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="bulk">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Bulk &amp; wholesale</p>
+        <h2>Ten kilos a month or more</h2>
+        <p class="lede">
+          Restaurants, bakeries and caterers get a standing order and a trade
+          rate. Tell us the weekly quantity and which day suits, and we hold
+          it for you on the van.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" data-seller="tel" href="tel:">Call <span data-seller="phone">—</span></a>
+          <a class="btn btn--ghost" data-seller="wa" href="#" target="_blank" rel="noopener">Ask on WhatsApp</a>
+        </div>
+      </div>
+      <div>
+        <figure class="plate">
+          <img src="assets/photos/plate-bulk.jpg" alt="Grated coconut packs stacked for a bulk order" loading="lazy" width="900" height="600">
+        </figure>
+        <div class="checklist">
+          <h3>Have ready when you call</h3>
+          <div>Monthly quantity</div>
+          <div>Pack size you want</div>
+          <div>Delivery day</div>
+          <div>How you&rsquo;ll pay</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ──────────────────────────────────────────────────────────── -->
+  <section class="section" id="faq" style="background:var(--color-surface)">
+    <div class="wrap">
+      <p class="kicker">FAQ</p>
+      <h2>Asked often</h2>
+      <div class="faq">
+        <details>
+          <summary>Can I pay online by card?</summary>
+          <p>No. There is no card payment on this site at all. Pay the delivery man in cash, or transfer to our bank account after you order.</p>
+        </details>
+        <details>
+          <summary>How long does grated coconut keep?</summary>
+          <p>Three days in the fridge, sealed. Freeze the pack unopened on the day it arrives and it keeps for a month.</p>
+        </details>
+        <details>
+          <summary>Can I change or cancel an order?</summary>
+          <p>Yes. We call before every run — change the quantity, the day or the address on that call, or cancel outright at no cost.</p>
+        </details>
+        <details>
+          <summary>Where do you deliver?</summary>
+          <p>Colombo and suburbs on the Wednesday and Saturday runs. The rest of the island goes by courier and takes one day longer.</p>
+        </details>
+        <details>
+          <summary>What is in the pack?</summary>
+          <p>Grated coconut. Nothing else — no preservative, no sugar, no colour, no anti-caking agent.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ──────────────────────────────────────────────────────── -->
+  <section class="section" id="contact">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Contact</p>
+        <h2 style="margin-bottom:18px">Talk to a person</h2>
+        <div class="contact-rows">
+          <div><b>Phone &amp; WhatsApp</b><a data-seller="tel" href="tel:"><span data-seller="phone">—</span></a></div>
+          <div><b>Email</b><a data-seller="email" href="mailto:">—</a></div>
+          <div><b>Kitchen &amp; pickup</b>Address to be confirmed, Colombo</div>
+          <div><b>Hours</b>Monday to Saturday, 7 a.m. – 6 p.m.</div>
+        </div>
+        <p class="placeholder-note">Address is a placeholder — replace before launch.</p>
+      </div>
+      <figure class="plate">
+        <img src="assets/photos/plate-packing.jpg" alt="Packs ready to go out" loading="lazy" width="900" height="600">
+        <figcaption>Packing for the Wednesday run</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── Closing banner ───────────────────────────────────────────────── -->
+  <section class="closing">
+    <div class="wrap">
+      <h2>Order today.<br>Pay when it reaches your door.</h2>
+      <div class="closing-actions">
+        <a class="btn btn--paper" href="#packs">Choose packs</a>
+        <a class="btn btn--paper" data-seller="tel" href="tel:">Call <span data-seller="phone">—</span></a>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-top">
-      <div>
-        <a class="brand" href="#top">
-          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
-            <circle cx="17" cy="17" r="16" fill="#1e1a15" stroke="#f0a03c" stroke-opacity=".5"/>
-            <circle cx="17" cy="17" r="10" fill="#f0a03c"/>
-            <circle cx="17" cy="17" r="4.6" fill="#12100e"/>
-            <circle cx="13.4" cy="13" r="2" fill="#ffd27a"/>
-          </svg>
-          <span>Coco Ceylon<small>Grove to door</small></span>
-        </a>
-      </div>
-      <div class="footer-cols">
-        <div>
-          <h4>Order</h4>
-          <ul><li>Grated — 100 g</li><li>Grated — 250 g</li><li>Grated — 500 g</li><li>Grated — 1 kg</li><li>Coconut milk</li></ul>
-        </div>
-        <div>
-          <h4>Paying</h4>
-          <ul><li>Cash on delivery</li><li>Bank transfer</li><li>Card — coming soon</li></ul>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <ul>
-            <li><a data-seller="email" href="mailto:">—</a></li>
-            <li><a data-seller="tel" href="tel:"><span data-seller="phone">—</span></a></li>
-            <li><a data-seller="wa" href="#" target="_blank" rel="noopener">WhatsApp</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Coco Ceylon (Pvt) Ltd.</span>
-      <span>Orders are confirmed by phone. No card details are collected on this site.</span>
-    </div>
+<footer class="wrap">
+  <div class="footer">
+    <span>KUSSIAMMA.LK — fresh grated coconut. Cash on delivery or bank transfer.</span>
+    <span><span data-seller="phone">—</span> · <a data-seller="email" href="mailto:">—</a></span>
   </div>
 </footer>
 
-<!-- ── Cart drawer ────────────────────────────────────────────────────── -->
-<div class="scrim" id="scrim"></div>
-
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Your cart" aria-hidden="true">
-  <div class="drawer-head">
-    <h3>Your cart</h3>
-    <button class="icon-btn" id="cartClose" aria-label="Close cart">✕</button>
-  </div>
-  <div class="drawer-body" id="cartBody"></div>
-  <div class="drawer-foot" id="cartFoot" hidden>
-    <div class="totals">
-      <div><span>Subtotal</span><span id="sumSubtotal">Rs 0</span></div>
-      <div><span>Delivery</span><span id="sumShipping">Rs 450</span></div>
-      <div class="grand"><span>Total</span><b id="sumTotal">Rs 0</b></div>
-    </div>
-    <p class="ship-hint" id="shipHint"></p>
-    <button class="btn btn--primary btn--block" id="checkoutOpen">Checkout</button>
-  </div>
-</aside>
-
-<!-- ── Checkout modal ─────────────────────────────────────────────────── -->
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" aria-hidden="true">
-  <div class="modal-card">
-    <div id="checkoutView">
-      <div class="drawer-head" style="padding:0 0 18px">
-        <div>
-          <h3 id="checkoutTitle">Checkout</h3>
-          <p class="muted" style="margin:0;font-size:14px">Your details go straight to the seller. No payment is taken here.</p>
-        </div>
-        <button class="icon-btn" id="modalClose" aria-label="Close checkout">✕</button>
-      </div>
-
-      <div class="order-recap" id="recap"></div>
-
-      <form id="checkoutForm" novalidate>
-        <div class="field">
-          <label for="name">Full name</label>
-          <input id="name" name="name" autocomplete="name" placeholder="Amaya Perera">
-          <span class="err">Tell us who to hand the order to.</span>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="phone">Mobile</label>
-            <input id="phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX">
-            <span class="err">Enter a mobile number of at least 9 digits.</span>
-          </div>
-          <div class="field">
-            <label for="city">City</label>
-            <input id="city" name="city" autocomplete="address-level2" placeholder="Colombo 05">
-            <span class="err">We need a city to route the delivery.</span>
-          </div>
-        </div>
-        <div class="field">
-          <label for="email">Email <span class="opt">optional</span></label>
-          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
-        </div>
-        <div class="field">
-          <label for="address">Delivery address</label>
-          <textarea id="address" name="address" autocomplete="street-address" placeholder="House number, street, landmark"></textarea>
-          <span class="err">An address of at least 10 characters, please.</span>
-        </div>
-        <div class="field">
-          <label for="slot">Preferred window</label>
-          <select id="slot" name="slot">
-            <option>Morning — 7am to 11am</option>
-            <option>Evening — 4pm to 8pm</option>
-            <option>Any time, just call first</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="notes">Notes for the seller <span class="opt">optional</span></label>
-          <textarea id="notes" name="notes" placeholder="Gate code, leave with security, deliver to the office…"></textarea>
-        </div>
-
-        <fieldset class="pay-fieldset">
-          <legend>How you&rsquo;ll pay</legend>
-          <div class="pay-opts">
-            <label class="pay-opt">
-              <input type="radio" name="pay" value="Cash on delivery" checked>
-              <span>Cash on delivery</span>
-            </label>
-            <label class="pay-opt">
-              <input type="radio" name="pay" value="Bank transfer">
-              <span>Bank transfer</span>
-            </label>
-          </div>
-          <div class="bank-box" id="bankInline" data-bank hidden></div>
-        </fieldset>
-
-        <button class="btn btn--primary btn--block" type="submit">Place order</button>
-        <p class="fine">You&rsquo;ll get a reference number, and we call to confirm before anything is packed.</p>
-      </form>
-    </div>
-
-    <div id="successView" hidden>
-      <div class="success">
-        <div class="success-mark">✓</div>
-        <h3>Order placed</h3>
-        <p class="muted" id="successLead"></p>
-        <span class="order-no" id="orderNo"></span>
-        <p class="muted" id="successMeta" style="font-size:14px"></p>
-
-        <div class="bank-box" id="bankPanel" data-bank hidden></div>
-
-        <div class="success-actions">
-          <a class="btn btn--primary" id="mailAgain" href="#">Email the order</a>
-          <a class="btn btn--ghost" id="waAgain" href="#" target="_blank" rel="noopener">WhatsApp</a>
-          <a class="btn btn--ghost" id="callAgain" href="#">Call the seller</a>
-        </div>
-        <button class="btn btn--ghost btn--block" id="successClose">Back to the shop</button>
-      </div>
-    </div>
+<!-- ── Fixed cart bar ─────────────────────────────────────────────────── -->
+<div class="cartbar" id="cartbar">
+  <div class="cartbar-inner">
+    <b id="barCount">0 packs</b>
+    <span class="muted" id="barTotal">Rs 0</span>
+    <a class="btn btn--primary" href="#order">Go to the form</a>
   </div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

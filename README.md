@@ -1,4 +1,4 @@
-# Coco Ceylon — single-page coconut ordering site
+# KussiAmma.lk — single-page coconut ordering site
 
 Static site. No build step, no dependencies, no backend.
 Open `index.html`, or serve the folder:
@@ -12,16 +12,41 @@ python3 -m http.server 4173
 | Layer | What it is |
 |---|---|
 | Markup | One hand-written `index.html` — every section on one page |
-| Styling | Plain CSS in `styles.css`, CSS custom properties for the whole palette |
+| Styling | Plain CSS in `styles.css`, design tokens as custom properties |
 | Behaviour | One vanilla JS file, `app.js` (IIFE, no framework, no bundler) |
-| Product images | JPEGs in `assets/photos/`, cropped from the originals in `src/` by `tools/crop_packs.py` |
-| Fonts | Fraunces + Inter from Google Fonts |
+| Images | JPEGs in `assets/photos/`, derived from `src/` by `tools/build_images.py` |
+| Fonts | Archivo 400/600/800 from Google Fonts |
 | Cart storage | `localStorage` — survives a refresh or a closed tab |
 | Order delivery | Email: relay POST if configured, otherwise a pre-filled mail draft |
-| Motion | CSS transitions + `IntersectionObserver` for scroll reveals |
 
-Deploys as-is to Netlify, Vercel, GitHub Pages or any shared host — it is
-just files.
+Deploys as-is to Cloudflare Pages, Netlify, Vercel, GitHub Pages or any shared
+host — it is just files.
+
+## Design
+
+The page follows the **Modernist** handoff (`Cyclone Coco` design bundle),
+rebuilt for this shop. The system, in short:
+
+- Paper ground `#f3f2f2`, ink text `#201e1d`, one hot accent `#ec3013`
+- **Zero corner radius everywhere.** 2px rules do all the structural work
+- Archivo, weight 800 for every heading, tight `-0.015em` tracking
+- Section order is "buy first, read later": nav → hero → **order form** →
+  stats → packs → why-us → how it's made → the kitchen → delivery → reviews
+  → bulk → FAQ → contact → accent closing banner → footer
+- A fixed cart bar rises from the bottom as soon as a pack is chosen
+
+Two deliberate departures from the handoff, both because there is now real
+photography where the handoff assumed placeholders:
+
+1. **Photographs stay in colour.** The handoff greyscales them
+   (`filter: grayscale(1)`), which made sense for stand-in images but would
+   throw away the green packaging the brand is built on.
+2. **Pack plates are square, not 4:3.** A standing pouch in a landscape frame
+   leaves the neighbouring packs crowding the shot; a square frame lets the
+   pack the card is actually selling dominate.
+
+**Not built:** the handoff's 300vh scroll-driven "tree to packet" sequence.
+Everything else in the handoff is here.
 
 ## Configure
 
@@ -30,97 +55,87 @@ Everything the seller changes lives in the `CONFIGURE ME` block at the top of
 
 ```js
 const SELLER = {
-  email: 'orders@cococeylon.lk',   // ← where order emails arrive
-  phone: '+94112345678',
-  phoneLabel: '+94 11 234 5678',
-  whatsapp: '94771234567',         // country code + number, no '+'
+  email: 'orders@kussiamma.lk',   // ← where order emails arrive
+  phone: '+94771234567',
+  phoneLabel: '+94 77 123 4567',
+  whatsapp: '94771234567',        // country code + number, no '+'
   bank: { bank: '…', name: '…', account: '…', branch: '…' }
 };
 
 const ORDER_ENDPOINT = '';
+const SHIPPING  = 300;            // flat delivery, LKR
+const FREE_OVER = 3000;           // free delivery above this
 ```
 
-The bank details and phone number are painted into the page from here, so
-they only need editing in one place.
+The phone number, email and bank details are painted into the page from here,
+and the two delivery figures are interpolated into the stat row, the delivery
+card and the order summary — so each only needs editing once.
 
 ### Getting orders into the inbox automatically
 
-`ORDER_ENDPOINT` is empty by default, so placing an order opens the
-customer's mail app with the whole order pre-filled — they press send.
-It works with zero setup, but it depends on the customer having mail
-configured.
+`ORDER_ENDPOINT` is empty by default, so placing an order opens the customer's
+mail app with the whole order pre-filled — they press send. It works with zero
+setup, but it depends on the customer having mail configured.
 
-Set an endpoint and the order is POSTed straight through instead, with
-nothing for the customer to send:
+Set an endpoint and the order is POSTed straight through instead:
 
 ```js
-const ORDER_ENDPOINT = 'https://formsubmit.co/ajax/orders@cococeylon.lk';
+const ORDER_ENDPOINT = 'https://formsubmit.co/ajax/orders@kussiamma.lk';
 ```
 
-FormSubmit is free and needs no account — the first order triggers a
-one-time confirmation email to that address. Formspree, Web3Forms or Basin
-work the same way. If the POST fails, the page falls back to the mail draft
-on its own, so an order is never silently lost.
-
-The success screen also offers WhatsApp and a call button, and the page
-carries a "call to order" link throughout for customers who would rather
-just phone.
+FormSubmit is free and needs no account — the first order triggers a one-time
+confirmation email to that address. Formspree, Web3Forms or Basin work the
+same way. If the POST fails the page falls back to the mail draft on its own,
+so an order is never silently lost. The confirmation panel also offers
+WhatsApp and a call button.
 
 ## Products
 
-The shop sells two lines only: **fresh grated coconut** in 100 g, 250 g,
-500 g and 1 kg pouches, and **first-press coconut milk** in 200 ml, 400 ml
-and 1 litre. Edit the `PRODUCTS` array in `app.js`. Each entry:
+Two lines: **fresh grated coconut** in 100 g / 250 g / 500 g / 1 kg, and
+**coconut milk** in 200 ml / 400 ml / 1 litre. Edit `PRODUCTS` in `app.js`:
 
 ```js
 {
-  id: 'grated-250g',         // unique, also the localStorage key
-  name: 'Fresh grated coconut — 250 g',
-  note: 'Short shelf-talker line.',
-  price: 390,                // LKR, integer
+  id: 'grated-250g',      // unique, also the localStorage key
+  group: 'grated',        // 'grated' or 'milk' — must match a GROUPS id
+  name: '250 g packet',
   unit: '250 g',
-  cat: 'grated',             // 'grated' or 'milk' — must match a CATEGORIES id
-  tag: 'Most popular',       // badge over the photo
+  price: 250,             // LKR, integer
+  desc: 'Short shelf-talker line.',
   img: 'assets/photos/pack-250g.jpg'
 }
 ```
 
-> **The prices in there are placeholders.** Replace every `price` with your
-> real one before the site goes anywhere near a customer.
+> **The prices are placeholders.** Grated coconut is set at a flat Rs 1,000
+> per kilo, which the packs heading states in so many words — change both
+> together, or the page contradicts itself.
 
-Delivery pricing is `SHIPPING` (Rs 450) and `FREE_OVER` (Rs 6,000) in the
-same block.
-
-## Product photos
+## Images
 
 | File | Source |
 |---|---|
-| `pack-100g.jpg`, `pack-250g.jpg`, `pack-500g.jpg`, `pack-1kg.jpg`, `hero.jpg` | The shop's own pack photography |
-| `milk-200.jpg`, `milk-400.jpg`, `milk-1l.jpg` | Stock (Unsplash / Pexels) |
+| `pack-*.jpg`, `hero-*.jpg`, `plate-*.jpg` | The shop's own product photography |
+| `milk-*.jpg` | Stock (Unsplash / Pexels), pending real milk pack shots |
 
-The four pack shots are **cropped out of a single range photograph** rather
-than shot individually. The originals live in `assets/photos/src/` and
-`tools/crop_packs.py` regenerates every derived image from them:
+The four pack shots are **cropped out of a single range photograph**. Originals
+live in `assets/photos/src/` and everything derives from them:
 
 ```bash
-python3 tools/crop_packs.py
+python3 tools/build_images.py
 ```
 
-Each pouch is described in that script by its centre and height in source
-pixels, and the crop box is widened to the card's aspect ratio around that
-centre — which is what keeps the size badge at the bottom of the pack inside
-the frame. If you reshoot the range, re-measure those four numbers and rerun
-it. The script needs Pillow (`pip3 install Pillow`).
-
-The coconut milk photographs are still generic stock, licensed for
-commercial use and needing no attribution. Replace them the same way the
-packs were: drop a JPEG into `assets/photos/`, point the product's `img` at
-it. Cards crop to a 760×800 frame, so anything roughly square or portrait
-works.
+Each pack is described in that script by its centre and height in source
+pixels, and the crop box is widened to the target aspect around that centre —
+which is what keeps the size badge at the bottom of the pouch inside the frame.
+Measure those numbers against the source, don't guess them. The script needs
+Pillow (`pip3 install Pillow`).
 
 ## Not here yet
 
 - **Card payments.** No card field exists anywhere on this site, by design —
-  a gateway (PayHere, Stripe, onepay) replaces the `deliverOrder` step when
-  you add one.
+  a gateway (PayHere, Stripe, onepay) replaces the `deliverOrder` step when you
+  add one. It needs a server-side secret, so it also needs a serverless
+  function; Cloudflare Pages, Netlify and Vercel all provide those free.
 - **Stock levels, order history, admin.** Those need a backend.
+- **Placeholders to replace before launch:** seller phone/email/bank, the
+  kitchen address, the three review quotes, and every price.
