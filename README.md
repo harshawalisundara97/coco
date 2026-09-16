@@ -14,7 +14,7 @@ python3 -m http.server 4173
 | Markup | One hand-written `index.html` — every section on one page |
 | Styling | Plain CSS in `styles.css`, CSS custom properties for the whole palette |
 | Behaviour | One vanilla JS file, `app.js` (IIFE, no framework, no bundler) |
-| Product images | Stock JPEGs in `assets/photos/`, 900px wide, 13–145 KB each |
+| Product images | JPEGs in `assets/photos/`, cropped from the originals in `src/` by `tools/crop_packs.py` |
 | Fonts | Fraunces + Inter from Google Fonts |
 | Cart storage | `localStorage` — survives a refresh or a closed tab |
 | Order delivery | Email: relay POST if configured, otherwise a pre-filled mail draft |
@@ -68,20 +68,20 @@ just phone.
 
 ## Products
 
-The shop sells two lines only: **desiccated coconut** in three grades and
-**first-press coconut milk** in three sizes. Edit the `PRODUCTS` array in
-`app.js`. Each entry:
+The shop sells two lines only: **fresh grated coconut** in 100 g, 250 g,
+500 g and 1 kg pouches, and **first-press coconut milk** in 200 ml, 400 ml
+and 1 litre. Edit the `PRODUCTS` array in `app.js`. Each entry:
 
 ```js
 {
-  id: 'desiccated-fine',     // unique, also the localStorage key
-  name: 'Desiccated coconut — fine',
+  id: 'grated-250g',         // unique, also the localStorage key
+  name: 'Fresh grated coconut — 250 g',
   note: 'Short shelf-talker line.',
-  price: 620,                // LKR, integer
-  unit: '500 g',
-  cat: 'powder',             // 'powder' or 'milk' — must match a CATEGORIES id
-  tag: 'Best seller',        // badge over the photo
-  img: 'assets/photos/desiccated-fine.jpg'
+  price: 390,                // LKR, integer
+  unit: '250 g',
+  cat: 'grated',             // 'grated' or 'milk' — must match a CATEGORIES id
+  tag: 'Most popular',       // badge over the photo
+  img: 'assets/photos/pack-250g.jpg'
 }
 ```
 
@@ -93,21 +93,30 @@ same block.
 
 ## Product photos
 
-`assets/photos/` currently holds **stock photography**, not this shop's own
-packaging:
-
 | File | Source |
 |---|---|
-| `desiccated-fine.jpg`, `desiccated-medium.jpg` | Pexels |
-| `milk-400.jpg`, `milk-1l.jpg` | Pexels |
-| `desiccated-coarse.jpg`, `milk-200.jpg`, `hero.jpg` | Unsplash |
+| `pack-100g.jpg`, `pack-250g.jpg`, `pack-500g.jpg`, `pack-1kg.jpg`, `hero.jpg` | The shop's own pack photography |
+| `milk-200.jpg`, `milk-400.jpg`, `milk-1l.jpg` | Stock (Unsplash / Pexels) |
 
-Both licences allow commercial use and neither requires attribution, so
-nothing here needs crediting on the page. They are generic images of
-coconut and coconut milk, though — swap in photos of your actual packs when
-you have them. Drop a JPEG into `assets/photos/`, point the product's `img`
-at it, and nothing else changes. Around 900px wide is plenty; the cards
-crop to a 1.15:1 frame.
+The four pack shots are **cropped out of a single range photograph** rather
+than shot individually. The originals live in `assets/photos/src/` and
+`tools/crop_packs.py` regenerates every derived image from them:
+
+```bash
+python3 tools/crop_packs.py
+```
+
+Each pouch is described in that script by its centre and height in source
+pixels, and the crop box is widened to the card's aspect ratio around that
+centre — which is what keeps the size badge at the bottom of the pack inside
+the frame. If you reshoot the range, re-measure those four numbers and rerun
+it. The script needs Pillow (`pip3 install Pillow`).
+
+The coconut milk photographs are still generic stock, licensed for
+commercial use and needing no attribution. Replace them the same way the
+packs were: drop a JPEG into `assets/photos/`, point the product's `img` at
+it. Cards crop to a 760×800 frame, so anything roughly square or portrait
+works.
 
 ## Not here yet
 

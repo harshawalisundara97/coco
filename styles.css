@@ -163,6 +163,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .hero-stats span { font-size: 12.5px; color: var(--muted); }
 
 .hero-art { position: relative; aspect-ratio: 1; display: grid; place-items: center; }
+.hero-art--photo { aspect-ratio: 1400 / 1100; }
 .hero-art::before {
   content: ""; position: absolute; inset: 8%;
   border-radius: 50%;
@@ -245,7 +246,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* Photography, so the image fills the frame edge to edge and a scrim keeps
    the tag readable over whatever the top of the photo happens to be. */
 .card-media {
-  position: relative; aspect-ratio: 1.15;
+  position: relative; aspect-ratio: 760 / 800;
   overflow: hidden; background: var(--surface-2);
 }
 .card-media::after {

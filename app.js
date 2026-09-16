@@ -35,25 +35,32 @@
      one, and the pack sizes in `unit` if yours differ. */
   const PRODUCTS = [
     {
-      id: 'desiccated-fine',
-      name: 'Desiccated coconut — fine',
-      note: 'Finely milled and low-fat. The default for cakes, sweets and coating.',
-      price: 620, unit: '500 g', cat: 'powder', tag: 'Best seller',
-      img: 'assets/photos/desiccated-fine.jpg'
+      id: 'grated-100g',
+      name: 'Fresh grated coconut — 100 g',
+      note: 'One-meal pack. Enough for a pol sambol without opening a bigger bag.',
+      price: 180, unit: '100 g', cat: 'grated', tag: 'Single use',
+      img: 'assets/photos/pack-100g.jpg'
     },
     {
-      id: 'desiccated-medium',
-      name: 'Desiccated coconut — medium',
-      note: 'The everyday kitchen grade. Sambol, curry, baking, anything.',
-      price: 1150, unit: '1 kg', cat: 'powder', tag: 'Kitchen staple',
-      img: 'assets/photos/desiccated-medium.jpg'
+      id: 'grated-250g',
+      name: 'Fresh grated coconut — 250 g',
+      note: 'The week-to-week size for a small kitchen. Resealable pouch.',
+      price: 390, unit: '250 g', cat: 'grated', tag: 'Most popular',
+      img: 'assets/photos/pack-250g.jpg'
     },
     {
-      id: 'desiccated-coarse',
-      name: 'Desiccated coconut — coarse',
-      note: 'Long shreds with real bite. For toppings, granola and garnish.',
-      price: 390, unit: '250 g', cat: 'powder', tag: 'Coarse cut',
-      img: 'assets/photos/desiccated-coarse.jpg'
+      id: 'grated-500g',
+      name: 'Fresh grated coconut — 500 g',
+      note: 'Family size. Baking, sambol, curry and sweets from one pouch.',
+      price: 690, unit: '500 g', cat: 'grated', tag: 'Family size',
+      img: 'assets/photos/pack-500g.jpg'
+    },
+    {
+      id: 'grated-1kg',
+      name: 'Fresh grated coconut — 1 kg',
+      note: 'Catering pack for kitchens, bakeries and caterers. Best value per kilo.',
+      price: 1250, unit: '1 kg', cat: 'grated', tag: 'Best value',
+      img: 'assets/photos/pack-1kg.jpg'
     },
     {
       id: 'milk-400',
@@ -80,7 +87,7 @@
 
   const CATEGORIES = [
     { id: 'all', label: 'Everything' },
-    { id: 'powder', label: 'Desiccated coconut' },
+    { id: 'grated', label: 'Grated coconut' },
     { id: 'milk', label: 'Coconut milk' }
   ];
 
