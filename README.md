@@ -1,6 +1,6 @@
 # KussiAmma.lk — single-page coconut ordering site
 
-Static site. No build step, no backend. One optional runtime dependency (Three.js, for the scroll story only).
+Static site. No build step, no dependencies, no backend.
 Open `index.html`, or serve the folder:
 
 ```bash
@@ -14,7 +14,6 @@ python3 -m http.server 4173
 | Markup | One hand-written `index.html` — every section on one page |
 | Styling | Plain CSS in `styles.css`, design tokens as custom properties |
 | Behaviour | One vanilla JS file, `app.js` (IIFE, no framework, no bundler) |
-| 3D | `story-3d.js`, an ES module using Three.js from a CDN import map — optional, degrades to the flat version |
 | Images | JPEGs in `assets/photos/`, derived from `src/` by `tools/build_images.py` |
 | Fonts | Archivo 400/600/800 from Google Fonts |
 | Cart storage | `localStorage` — survives a refresh or a closed tab |
@@ -52,31 +51,6 @@ Stage windows, all anchored to a ground rule at 74% of the panel: fall `0→0.42
 split `0.42→0.58`, grate `0.56→0.78`, pack `0.76→1`. The palm is sized as a
 percentage of the panel rather than in fixed pixels, so it always fits between
 the ground rule and the top edge whatever height the stage gets.
-
-#### The WebGL layer
-
-`story-3d.js` renders that same sequence in real 3D — a modelled palm, a nut
-that tumbles as it falls, two shells that open into bowls with the white
-flesh showing, a pile of grated coconut, and a packet that turns to face you.
-Flat-shaded in the site's own three colours rather than photoreal, so it reads
-as part of the paper-and-ink design instead of an import from another site.
-
-It is **pure enhancement**. `app.js` animates the flat SVG/DOM version
-unconditionally and dispatches a `storyprogress` event; `story-3d.js` listens
-for that event, so the scroll maths exists in exactly one place. Only once a
-WebGL context really exists does the module add `.has-3d` to the panel, which
-is what hides the flat shapes. If the module fails to load, the CDN is
-blocked, or there is no WebGL, the flat version simply stays — nothing to
-configure and nothing to catch.
-
-Rendering is event-driven, not a `requestAnimationFrame` loop: a frame is
-drawn only when scroll progress actually changes, so the scene costs nothing
-while the section is off screen. Pixel ratio is capped at 2.
-
-Three.js (~150 KB over the wire) is loaded from jsDelivr through an import
-map in `index.html`. That is the site's one runtime third-party dependency —
-to remove it, drop `three.module.js` into `assets/vendor/` and point the
-import map at the local copy instead.
 
 ### Glassmorphism
 

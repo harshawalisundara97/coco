@@ -311,9 +311,6 @@
       steps.forEach((s, i) => s.classList.toggle('is-active', i === active));
       caption.textContent = STAGES[active].caption;
       progress.style.width = (p * 100) + '%';
-
-      // The WebGL layer, when it loaded, animates off this same progress.
-      section.dispatchEvent(new CustomEvent("storyprogress", { detail: p }));
     }
 
     function measure() {
