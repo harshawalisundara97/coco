@@ -1,0 +1,24 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Polished coconut shell bowl">
+  <defs>
+    <linearGradient id="bwOut" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b5340"/>
+      <stop offset="60%" stop-color="#432f21"/>
+      <stop offset="100%" stop-color="#231710"/>
+    </linearGradient>
+    <linearGradient id="bwIn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a6b51"/>
+      <stop offset="100%" stop-color="#3a2819"/>
+    </linearGradient>
+    <radialGradient id="bwShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#000" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="200" cy="330" rx="118" ry="26" fill="url(#bwShadow)"/>
+  <path d="M74 158h252c0 88-56 150-126 150S74 246 74 158z" fill="url(#bwOut)"/>
+  <ellipse cx="200" cy="158" rx="126" ry="38" fill="url(#bwIn)"/>
+  <ellipse cx="200" cy="160" rx="110" ry="31" fill="#2a1c12"/>
+  <ellipse cx="200" cy="160" rx="110" ry="31" fill="#f0a03c" opacity=".07"/>
+  <path d="M104 210c14 40 44 68 80 74" stroke="#fff" stroke-opacity=".12" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M286 186c-4 26-14 48-28 64" stroke="#fff" stroke-opacity=".08" stroke-width="9" fill="none" stroke-linecap="round"/>
+</svg>

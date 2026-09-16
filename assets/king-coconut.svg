@@ -1,0 +1,23 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="King coconut">
+  <defs>
+    <radialGradient id="kc" cx="38%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#ffd27a"/>
+      <stop offset="45%" stop-color="#f2a13c"/>
+      <stop offset="100%" stop-color="#b85f17"/>
+    </radialGradient>
+    <linearGradient id="kcStem" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fbf6d"/>
+      <stop offset="100%" stop-color="#4d7436"/>
+    </linearGradient>
+    <radialGradient id="kcShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#000" stop-opacity=".45"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="200" cy="344" rx="112" ry="26" fill="url(#kcShadow)"/>
+  <path d="M196 74c-6-18-2-30 8-38 3 12 10 20 18 26-10 2-19 6-26 12z" fill="url(#kcStem)"/>
+  <path d="M200 70c62 0 106 52 106 116 0 74-46 130-106 130S94 260 94 186C94 122 138 70 200 70z" fill="url(#kc)"/>
+  <path d="M200 70c24 0 45 8 61 21-26 22-41 60-41 105 0 50 19 92 49 112-20 11-44 8-69 8-58 0-106-56-106-130C94 122 138 70 200 70z" fill="#fff" opacity=".10"/>
+  <ellipse cx="152" cy="140" rx="26" ry="40" fill="#fff" opacity=".28" transform="rotate(-22 152 140)"/>
+  <path d="M132 250c14 30 38 48 68 52" stroke="#fff" stroke-opacity=".22" stroke-width="9" fill="none" stroke-linecap="round"/>
+</svg>

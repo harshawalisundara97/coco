@@ -1,0 +1,22 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coconut flour sack">
+  <defs>
+    <linearGradient id="flSack" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e3d6bd"/>
+      <stop offset="45%" stop-color="#cdbc9c"/>
+      <stop offset="100%" stop-color="#9c8a6c"/>
+    </linearGradient>
+    <radialGradient id="flShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#000" stop-opacity=".45"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="200" cy="348" rx="110" ry="24" fill="url(#flShadow)"/>
+  <path d="M136 98c12 14 32 18 64 18s52-4 64-18c8 22 22 44 22 76v144c0 12-10 22-22 22H136c-12 0-22-10-22-22V174c0-32 14-54 22-76z" fill="url(#flSack)"/>
+  <path d="M136 98c-6 16-14 30-18 46 26 14 56 20 82 20s56-6 82-20c-4-16-12-30-18-46-12 14-32 18-64 18s-52-4-64-18z" fill="#000" opacity=".12"/>
+  <rect x="146" y="196" width="108" height="76" rx="8" fill="#12100e" opacity=".85"/>
+  <rect x="162" y="216" width="76" height="9" rx="4" fill="#f0a03c"/>
+  <rect x="170" y="238" width="60" height="7" rx="3" fill="#f2ece3" opacity=".7"/>
+  <rect x="180" y="256" width="40" height="6" rx="3" fill="#f2ece3" opacity=".35"/>
+  <path d="M132 130v186" stroke="#fff" stroke-opacity=".22" stroke-width="10" stroke-linecap="round"/>
+  <path d="M270 140v176" stroke="#000" stroke-opacity=".16" stroke-width="12" stroke-linecap="round"/>
+</svg>

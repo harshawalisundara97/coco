@@ -1,0 +1,28 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Halved mature coconut">
+  <defs>
+    <radialGradient id="hfShell" cx="40%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#7d6349"/>
+      <stop offset="60%" stop-color="#4a3525"/>
+      <stop offset="100%" stop-color="#241810"/>
+    </radialGradient>
+    <radialGradient id="hfFlesh" cx="45%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="70%" stop-color="#f0e4d0"/>
+      <stop offset="100%" stop-color="#d4c2a6"/>
+    </radialGradient>
+    <radialGradient id="hfShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#000" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="200" cy="336" rx="126" ry="28" fill="url(#hfShadow)"/>
+  <circle cx="200" cy="200" r="134" fill="url(#hfShell)"/>
+  <circle cx="200" cy="200" r="112" fill="#2e2016"/>
+  <circle cx="200" cy="200" r="104" fill="url(#hfFlesh)"/>
+  <circle cx="200" cy="200" r="66" fill="#efe1c9"/>
+  <circle cx="200" cy="200" r="66" fill="#8a6b4d" opacity=".18"/>
+  <path d="M200 134c36 0 66 30 66 66s-30 66-66 66" fill="#fff" opacity=".22"/>
+  <path d="M96 118c22-20 52-32 84-34" stroke="#fff" stroke-opacity=".14" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <circle cx="160" cy="122" r="7" fill="#3a2a1c" opacity=".55"/>
+  <circle cx="246" cy="268" r="6" fill="#3a2a1c" opacity=".4"/>
+</svg>
