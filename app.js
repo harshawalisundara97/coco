@@ -31,78 +31,57 @@
   const STORE_KEY = 'coco-ceylon-cart';
   /* ═════════════════════════════════════════════════════════════════════ */
 
+  /* ⚠ PRICES BELOW ARE PLACEHOLDERS — replace every `price` with your real
+     one, and the pack sizes in `unit` if yours differ. */
   const PRODUCTS = [
     {
-      id: 'king-coconut',
-      name: 'King coconut',
-      note: 'Thambili, cut this morning. Sold by the dozen, straws in the box.',
-      price: 1850, unit: 'dozen', cat: 'fresh', tag: 'Cut today',
-      img: 'assets/king-coconut.svg', glow: 'rgba(240,160,60,.26)'
+      id: 'desiccated-fine',
+      name: 'Desiccated coconut — fine',
+      note: 'Finely milled and low-fat. The default for cakes, sweets and coating.',
+      price: 620, unit: '500 g', cat: 'powder', tag: 'Best seller',
+      img: 'assets/photos/desiccated-fine.jpg'
     },
     {
-      id: 'coconut-water',
-      name: 'Young coconut water',
-      note: 'Six green nuts, topped and sealed. Nothing added, nothing boiled.',
-      price: 1490, unit: '6 nuts', cat: 'drinks', tag: 'Chilled',
-      img: 'assets/coconut-water.svg', glow: 'rgba(143,191,109,.24)'
+      id: 'desiccated-medium',
+      name: 'Desiccated coconut — medium',
+      note: 'The everyday kitchen grade. Sambol, curry, baking, anything.',
+      price: 1150, unit: '1 kg', cat: 'powder', tag: 'Kitchen staple',
+      img: 'assets/photos/desiccated-medium.jpg'
     },
     {
-      id: 'coconut-oil',
-      name: 'Virgin coconut oil',
-      note: 'Cold-pressed within 48 hours of splitting. 500ml amber glass.',
-      price: 2250, unit: '500 ml', cat: 'pantry', tag: 'Best seller',
-      img: 'assets/coconut-oil.svg', glow: 'rgba(240,160,60,.2)'
+      id: 'desiccated-coarse',
+      name: 'Desiccated coconut — coarse',
+      note: 'Long shreds with real bite. For toppings, granola and garnish.',
+      price: 390, unit: '250 g', cat: 'powder', tag: 'Coarse cut',
+      img: 'assets/photos/desiccated-coarse.jpg'
     },
     {
-      id: 'coconut-milk',
-      name: 'First-press milk',
-      note: 'Thick kiri hodi base, no gums or stabilisers. Keeps 5 days cold.',
-      price: 890, unit: '1 litre', cat: 'pantry', tag: 'Fresh press',
-      img: 'assets/coconut-milk.svg', glow: 'rgba(239,227,208,.18)'
+      id: 'milk-400',
+      name: 'Coconut milk — 400 ml',
+      note: 'First press, thick. No gums, no stabilisers, no preservatives.',
+      price: 480, unit: '400 ml', cat: 'milk', tag: 'First press',
+      img: 'assets/photos/milk-400.jpg'
     },
     {
-      id: 'coconut-chips',
-      name: 'Toasted chips',
-      note: 'Wood-toasted, salted with Hambantota sea salt. Dangerously snackable.',
-      price: 640, unit: '180 g', cat: 'pantry', tag: 'New',
-      img: 'assets/coconut-chips.svg', glow: 'rgba(184,95,23,.28)'
+      id: 'milk-200',
+      name: 'Coconut milk — 200 ml',
+      note: 'Single-cook size, so an opened pack never goes to waste.',
+      price: 280, unit: '200 ml', cat: 'milk', tag: 'Handy size',
+      img: 'assets/photos/milk-200.jpg'
     },
     {
-      id: 'coconut-bowl',
-      name: 'Shell bowl set',
-      note: 'Two halves sanded and oiled by hand in Ambalangoda. No two alike.',
-      price: 1950, unit: 'pair', cat: 'home', tag: 'Handmade',
-      img: 'assets/coconut-bowl.svg', glow: 'rgba(120,88,60,.3)'
-    },
-    {
-      id: 'coconut-sugar',
-      name: 'Kithul-style treacle',
-      note: 'Slow-reduced coconut sap. Dark, smoky, pours like honey.',
-      price: 1180, unit: '350 ml', cat: 'pantry', tag: 'Small batch',
-      img: 'assets/coconut-sugar.svg', glow: 'rgba(165,96,31,.28)'
-    },
-    {
-      id: 'coconut-half',
-      name: 'Mature coconut',
-      note: 'Whole brown nuts for scraping. Four to a crate, husked on request.',
-      price: 760, unit: '4 nuts', cat: 'fresh', tag: 'Kitchen staple',
-      img: 'assets/coconut-half.svg', glow: 'rgba(200,170,130,.2)'
-    },
-    {
-      id: 'coconut-flour',
-      name: 'Coconut flour',
-      note: 'Milled from pressed meal, nothing wasted. Gluten-free baking.',
-      price: 980, unit: '1 kg', cat: 'pantry', tag: 'Zero waste',
-      img: 'assets/coconut-flour.svg', glow: 'rgba(227,214,189,.18)'
+      id: 'milk-1l',
+      name: 'Coconut milk — 1 litre',
+      note: 'Catering pack for kitchens and caterers. The same first-press milk.',
+      price: 1090, unit: '1 litre', cat: 'milk', tag: 'Catering',
+      img: 'assets/photos/milk-1l.jpg'
     }
   ];
 
   const CATEGORIES = [
     { id: 'all', label: 'Everything' },
-    { id: 'fresh', label: 'Fresh nuts' },
-    { id: 'drinks', label: 'Drinks' },
-    { id: 'pantry', label: 'Pantry' },
-    { id: 'home', label: 'Home' }
+    { id: 'powder', label: 'Desiccated coconut' },
+    { id: 'milk', label: 'Coconut milk' }
   ];
 
   const $ = (sel) => document.querySelector(sel);
@@ -112,6 +91,8 @@
   /** cart: { [productId]: qty } */
   let cart = load();
   let filter = 'all';
+  // Only the first paint animates in; a filter change should feel instant.
+  let gridPainted = false;
 
   function load() {
     try {
@@ -156,10 +137,10 @@
     grid.innerHTML = list.map((p) => {
       const qty = cart[p.id] || 0;
       return `
-        <article class="card reveal">
-          <div class="card-media" style="--glow:${p.glow}">
+        <article class="card${gridPainted ? "" : " reveal"}">
+          <div class="card-media">
             <span class="card-tag">${p.tag}</span>
-            <img src="${p.img}" alt="${p.name}" loading="lazy" width="400" height="400">
+            <img src="${p.img}" alt="${p.name}" loading="lazy">
           </div>
           <div class="card-body">
             <h3>${p.name}</h3>
@@ -174,6 +155,7 @@
         </article>`;
     }).join('');
 
+    gridPainted = true;
     observeReveals();
   }
 
@@ -192,7 +174,7 @@
       foot.hidden = true;
       body.innerHTML = `
         <div class="cart-empty">
-          <img src="assets/coconut-half.svg" alt="">
+          <img src="assets/king-coconut.svg" alt="">
           <p>Your cart is empty.<br>Pick something from the menu.</p>
         </div>`;
       return;
@@ -343,7 +325,8 @@
 
   function orderText(o) {
     const rows = o.items
-      .map((i) => `  • ${i.name} (${i.unit}) × ${i.qty} — ${rupees(i.line)}`)
+      // Pack sizes like "400 ml" are often already in the name — do not repeat them.
+      .map((i) => `  • ${i.name}${i.name.includes(i.unit) ? "" : ` (${i.unit})`} × ${i.qty} — ${rupees(i.line)}`)
       .join('\n');
     return [
       `NEW ORDER ${o.ref}`,

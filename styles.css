@@ -168,16 +168,22 @@ button, input, select, textarea { font: inherit; color: inherit; }
   border-radius: 50%;
   background: radial-gradient(circle at 40% 34%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 66%);
 }
-.hero-art > img { position: relative; width: 78%; animation: bob 6s ease-in-out infinite; }
-.hero-art .orbit {
-  position: absolute; inset: 4%;
-  border: 1px dashed var(--divider); border-radius: 50%;
-  animation: spin 40s linear infinite;
+/* The hero photograph sits in a soft-cornered frame, warmed slightly so it
+   belongs to the husk palette rather than fighting it. */
+.hero-art--photo > img {
+  position: relative;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  filter: saturate(.92) contrast(1.04);
 }
-/* Each satellite counter-rotates so its product stays upright on the ring. */
-.orbit-item { position: absolute; width: 27%; animation: spin 40s linear infinite reverse; }
-.orbit-item--a { top: -7%; left: 36.5%; }
-.orbit-item--b { bottom: 1%; right: 1%; }
+.hero-art--photo::after {
+  content: ""; position: absolute; inset: 0;
+  border-radius: var(--r-lg); pointer-events: none;
+  background: linear-gradient(200deg, transparent 40%, rgba(24,14,4,.5));
+  box-shadow: inset 0 0 0 1px var(--divider);
+}
 .float-tag {
   position: absolute; z-index: 2;
   display: flex; align-items: center; gap: 8px;
@@ -236,14 +242,23 @@ button, input, select, textarea { font: inherit; color: inherit; }
   transition: transform .25s var(--ease), box-shadow .25s var(--ease);
 }
 .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+/* Photography, so the image fills the frame edge to edge and a scrim keeps
+   the tag readable over whatever the top of the photo happens to be. */
 .card-media {
   position: relative; aspect-ratio: 1.15;
-  display: grid; place-items: center;
-  background: radial-gradient(circle at 50% 58%, var(--glow, color-mix(in srgb, var(--accent) 18%, transparent)), transparent 64%);
+  overflow: hidden; background: var(--surface-2);
 }
-.card-media img { width: 66%; transition: transform .35s var(--ease); }
-.card:hover .card-media img { transform: scale(1.07) rotate(-2deg); }
+.card-media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(8,6,5,.5) 0%, transparent 38%, rgba(8,6,5,.25) 100%);
+}
+.card-media img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .5s var(--ease);
+}
+.card:hover .card-media img { transform: scale(1.05); }
 .card-tag {
+  z-index: 2;
   position: absolute; top: 13px; left: 13px;
   padding: 5px 11px; border-radius: var(--r-pill);
   background: color-mix(in srgb, var(--bg) 72%, transparent);
@@ -331,7 +346,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
   align-items: center; padding: 14px 0; border-bottom: 1px solid var(--divider);
 }
 .line:last-child { border-bottom: 0; }
-.line-media { border-radius: var(--r-md); background: var(--surface-2); padding: 7px; }
+.line-media { width: 62px; height: 62px; border-radius: var(--r-md); overflow: hidden; background: var(--surface-2); }
+.line-media img { width: 100%; height: 100%; object-fit: cover; }
 .line h4 { font-family: var(--font-body); font-size: 14.5px; font-weight: 600; margin: 0 0 2px; }
 .line p { margin: 0; font-size: 12.5px; color: var(--muted); }
 .stepper { display: inline-flex; align-items: center; gap: 4px; margin-top: 8px; background: var(--surface-2); border-radius: var(--r-pill); padding: 3px; }

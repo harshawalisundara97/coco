@@ -14,7 +14,7 @@ python3 -m http.server 4173
 | Markup | One hand-written `index.html` — every section on one page |
 | Styling | Plain CSS in `styles.css`, CSS custom properties for the whole palette |
 | Behaviour | One vanilla JS file, `app.js` (IIFE, no framework, no bundler) |
-| Product images | Hand-drawn SVGs in `assets/` — sharp at any size, ~1.4 KB each |
+| Product images | Stock JPEGs in `assets/photos/`, 900px wide, 13–145 KB each |
 | Fonts | Fraunces + Inter from Google Fonts |
 | Cart storage | `localStorage` — survives a refresh or a closed tab |
 | Order delivery | Email: relay POST if configured, otherwise a pre-filled mail draft |
@@ -68,24 +68,46 @@ just phone.
 
 ## Products
 
-Edit the `PRODUCTS` array in `app.js`. Each entry:
+The shop sells two lines only: **desiccated coconut** in three grades and
+**first-press coconut milk** in three sizes. Edit the `PRODUCTS` array in
+`app.js`. Each entry:
 
 ```js
 {
-  id: 'king-coconut',        // unique, also the localStorage key
-  name: 'King coconut',
+  id: 'desiccated-fine',     // unique, also the localStorage key
+  name: 'Desiccated coconut — fine',
   note: 'Short shelf-talker line.',
-  price: 1850,               // LKR, integer
-  unit: 'dozen',
-  cat: 'fresh',              // must match a CATEGORIES id
-  tag: 'Cut today',          // badge on the image
-  img: 'assets/king-coconut.svg',
-  glow: 'rgba(240,160,60,.26)'   // halo behind the product
+  price: 620,                // LKR, integer
+  unit: '500 g',
+  cat: 'powder',             // 'powder' or 'milk' — must match a CATEGORIES id
+  tag: 'Best seller',        // badge over the photo
+  img: 'assets/photos/desiccated-fine.jpg'
 }
 ```
 
+> **The prices in there are placeholders.** Replace every `price` with your
+> real one before the site goes anywhere near a customer.
+
 Delivery pricing is `SHIPPING` (Rs 450) and `FREE_OVER` (Rs 6,000) in the
 same block.
+
+## Product photos
+
+`assets/photos/` currently holds **stock photography**, not this shop's own
+packaging:
+
+| File | Source |
+|---|---|
+| `desiccated-fine.jpg`, `desiccated-medium.jpg` | Pexels |
+| `milk-400.jpg`, `milk-1l.jpg` | Pexels |
+| `desiccated-coarse.jpg`, `milk-200.jpg`, `hero.jpg` | Unsplash |
+
+Both licences allow commercial use and neither requires attribution, so
+nothing here needs crediting on the page. They are generic images of
+coconut and coconut milk, though — swap in photos of your actual packs when
+you have them. Drop a JPEG into `assets/photos/`, point the product's `img`
+at it, and nothing else changes. Around 900px wide is plenty; the cards
+crop to a 1.15:1 frame.
 
 ## Not here yet
 
