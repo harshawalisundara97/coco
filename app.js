@@ -231,6 +231,113 @@
     }));
   }
 
+  /* ── "Tree to packet" — scroll-driven story ────────────────────────────
+     Driven by scroll *position*, never by a timer, so it never plays on its
+     own and needs no special handling under prefers-reduced-motion. */
+
+  const STAGES = [
+    { from: 0,    to: 0.42, caption: 'A mature nut drops from the palm.' },
+    { from: 0.42, to: 0.58, caption: 'Husked and split, the water drained off.' },
+    { from: 0.56, to: 0.78, caption: 'The white is scraped from the shell the same morning.' },
+    { from: 0.76, to: 1,    caption: 'Weighed into the packet, sealed and date-stamped.' }
+  ];
+
+  const clamp01 = (n) => Math.min(1, Math.max(0, n));
+  /** How far through its own window `p` has travelled, as 0→1. */
+  const ramp = (p, { from, to }) => clamp01((p - from) / (to - from));
+
+  function initStory() {
+    const section = $('#story');
+    if (!section) return;
+
+    const nut = $('#stageNut');
+    const tree = $('#stageTree');
+    const fronds = $('#stageFronds');
+    const hanging = $('#stageHanging');
+    const halfL = $('#stageHalfL');
+    const halfR = $('#stageHalfR');
+    const pile = $('#stagePile');
+    const packet = $('#stagePacket');
+    const caption = $('#stageCaption');
+    const progress = $('#stageProgress');
+    const steps = [...$('#stageSteps').children];
+
+    let last = -1;
+    let queued = false;
+
+    function draw(p) {
+      // 01 — the nut lets go of the palm and falls to the ground rule,
+      // drifting to the centre line and turning as it goes.
+      const fall = ramp(p, STAGES[0]);
+      const fell = p >= STAGES[1].from;
+      // Hidden until it actually lets go, so it never sits on top of the crown.
+      nut.style.opacity = (fell || fall <= 0.03) ? 0 : 1;
+      nut.style.left = (20 + fall * 30) + '%';
+      nut.style.top = (46 + fall * 28) + '%';
+      nut.style.transform = `rotate(${fall * 300}deg)`;
+
+      // The palm recoils as the nut leaves, then settles — one damped swing
+      // rather than a loop, so nothing moves unless the page is scrolling.
+      const recoil = Math.sin(fall * Math.PI * 2) * (1 - fall) * 3.2;
+      tree.style.setProperty('--sway', recoil.toFixed(2) + 'deg');
+      fronds.style.transform = `rotate(${(-recoil * 1.6).toFixed(2)}deg)`;
+      // The nut it dropped leaves the cluster the moment it lets go.
+      hanging.style.opacity = fall > 0.04 ? 0 : 1;
+
+      // 02 — two halves seated on the rule separate to ±62px.
+      const split = ramp(p, STAGES[1]);
+      const gone = p >= STAGES[3].from;
+      const halfFade = gone ? 1 - ramp(p, STAGES[3]) : (fell ? 1 : 0);
+      halfL.style.opacity = halfFade;
+      halfR.style.opacity = halfFade;
+      halfL.style.transform = `translate(${-split * 62}px, -38px)`;
+      halfR.style.transform = `translate(${split * 62}px, -38px)`;
+
+      // 03 — the grated pile grows up off the ground rule.
+      const grate = ramp(p, STAGES[2]);
+      pile.style.height = (grate * 96) + 'px';
+      pile.style.opacity = halfFade;
+
+      // 04 — the packet scales up in its place.
+      const pack = ramp(p, STAGES[3]);
+      packet.style.opacity = pack;
+      packet.style.transform = `translateY(-100%) scale(${0.6 + pack * 0.4})`;
+
+      // Labels, caption and the progress rule.
+      let active = 0;
+      for (let i = STAGES.length - 1; i >= 0; i--) {
+        if (p >= STAGES[i].from) { active = i; break; }
+      }
+      steps.forEach((s, i) => s.classList.toggle('is-active', i === active));
+      caption.textContent = STAGES[active].caption;
+      progress.style.width = (p * 100) + '%';
+    }
+
+    function measure() {
+      const rect = section.getBoundingClientRect();
+      const range = rect.height - window.innerHeight;
+      const p = range > 0 ? clamp01(-rect.top / range) : 0;
+
+      // Ignore sub-pixel jitter; repaint only on a real move.
+      if (Math.abs(p - last) > 0.004) {
+        last = p;
+        draw(p);
+      }
+      queued = false;
+    }
+
+    function onScroll() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(measure);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    draw(0);
+    onScroll();
+  }
+
   /* ── Checkout ──────────────────────────────────────────────────────── */
 
   const RULES = {
@@ -400,6 +507,7 @@
     renderPacks();
     renderSummary();
     initRotator();
+    initStory();
 
     $('#packGroups').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-step]');

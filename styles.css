@@ -11,8 +11,10 @@
   --color-accent-700: #ae1800;
   --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
 
+  --color-accent-300: #ffc4b8;
   --color-neutral-300: #d7d3d3;
   --color-neutral-600: #7d7979;
+  --color-neutral-700: #605d5d;
   --color-neutral-800: #444141;
 
   --font: "Archivo", system-ui, -apple-system, sans-serif;
@@ -90,6 +92,14 @@ button, input, select, textarea { font: inherit; color: inherit; }
   background: var(--color-bg);
   border-bottom: var(--rule) solid var(--color-divider);
 }
+/* Frosted paper, so the page reads through the bar as it scrolls under. */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .nav {
+    background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    backdrop-filter: blur(16px) saturate(1.3);
+  }
+}
 .nav-inner {
   display: flex; flex-wrap: wrap; align-items: center; gap: 16px;
   padding: 12px var(--gutter);
@@ -126,11 +136,21 @@ button, input, select, textarea { font: inherit; color: inherit; }
   pointer-events: none;
 }
 .hero-inner { position: relative; z-index: 2; padding: clamp(40px, 6vw, 72px) 0; }
+/* Frosted glass, because there is a photograph behind it to frost. The
+   opaque paper fill stays as the fallback wherever backdrop-filter is not
+   supported, so the type never lands on bare photography. */
 .hero-plate {
   max-width: 620px;
   background: var(--color-bg);
   padding: clamp(24px, 3.4vw, 40px);
   box-shadow: inset 0 0 0 var(--rule) var(--color-text);
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .hero-plate {
+    background: color-mix(in srgb, var(--color-bg) 62%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25);
+    backdrop-filter: blur(18px) saturate(1.25);
+  }
 }
 .hero-plate h1 { font-size: clamp(30px, 4.6vw, 56px); letter-spacing: -0.02em; }
 .hero-plate .lede { margin-bottom: 20px; }
@@ -324,6 +344,14 @@ figure { margin: 0; }
   transform: translateY(100%);
   transition: transform .25s ease;
 }
+/* Smoked glass over whatever the bar is covering. */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .cartbar {
+    background: color-mix(in srgb, var(--color-text) 78%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    backdrop-filter: blur(16px) saturate(1.3);
+  }
+}
 .cartbar.is-open { transform: none; }
 .cartbar-inner {
   display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
@@ -357,4 +385,130 @@ figure { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+}
+
+/* ── "Tree to packet" — scroll-driven story ───────────────────────────────
+   The outer section is three viewports tall; the stage sticks to the top and
+   plays through four windows as the section scrolls past. Position-driven,
+   never time-driven, so there is nothing to pause under reduced motion. */
+.story {
+  position: relative;
+  height: 300vh;
+  margin: clamp(40px, 6vw, 72px) 0;
+}
+.story-stage {
+  position: sticky; top: 0;
+  height: 100vh; max-height: 100vh;
+  overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center;
+  /* Top padding clears the sticky nav, which shares the same top edge. */
+  padding: 84px 0 clamp(20px, 3vw, 40px);
+}
+.story-cols {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px clamp(24px, 4vw, 56px);
+  align-items: stretch;
+  min-height: 0;
+}
+.story-photo { overflow: hidden; min-height: 0; }
+.story-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* The animation panel. Everything inside is anchored to the ground rule. */
+.stage-panel {
+  position: relative;
+  border: var(--rule) solid var(--color-divider);
+  overflow: hidden;
+  /* Grow into whatever the sticky stage can spare, but never below the height
+     the packet needs at full scale. */
+  flex: 1 1 auto;
+  min-height: 340px;
+  background: var(--color-bg);
+}
+.stage-col { display: flex; flex-direction: column; min-height: 0; }
+.stage-guide {
+  position: absolute; top: 0; bottom: 0; left: 50%;
+  width: var(--rule); margin-left: calc(var(--rule) / -2);
+  background: var(--color-divider); opacity: .25;
+}
+.stage-ground {
+  position: absolute; left: 0; right: 0; top: 74%;
+  height: var(--rule); background: var(--color-text);
+}
+
+/* The palm the nut falls from. Rooted on the ground rule, and it leans with
+   the fall — the sway angle is set from scroll progress, never a timer. */
+.stage-tree {
+  /* Sized against the panel, not in fixed pixels, so the palm always fits
+     between the ground rule and the top edge whatever height the stage gets. */
+  position: absolute; left: 20%; top: 74%;
+  height: 62%; aspect-ratio: 160 / 220; width: auto;
+  transform: translate(-50%, -100%) rotate(var(--sway, 0deg));
+  transform-origin: 50% 100%;
+}
+.stage-tree svg { width: 100%; height: 100%; overflow: visible; }
+.stage-tree .trunk { fill: none; stroke: var(--color-text); stroke-width: 8; stroke-linecap: round; }
+.stage-tree .fronds { transform-box: fill-box; transform-origin: 45% 92%; }
+.stage-tree .frond { fill: var(--color-text); }
+.stage-tree .frond--accent { fill: var(--color-accent); }
+.stage-tree .hanging { fill: var(--color-text); transition: opacity .2s ease; }
+
+/* 01 — the nut falls. It starts on the palm's hanging cluster (41.9% of the
+   panel) the instant it lets go, and lands on the ground rule at the centre. */
+.stage-nut {
+  position: absolute; left: 20%; top: 46%;
+  width: 64px; height: 64px; margin: -32px 0 0 -32px;
+  border-radius: 50%; background: var(--color-text);
+}
+/* 02 — it splits into two halves seated on the ground rule */
+.stage-half {
+  position: absolute; top: 74%; left: 50%;
+  width: 76px; height: 38px; margin-left: -38px;
+  border-radius: 38px 38px 0 0;
+  transform: translateY(-38px);
+  opacity: 0;
+}
+.stage-half--l { background: var(--color-text); }
+.stage-half--r { background: var(--color-accent); }
+/* 03 — grated coconut piles up from the ground rule */
+.stage-pile {
+  position: absolute; top: 74%; left: 50%;
+  width: 150px; margin-left: -75px;
+  height: 0;
+  background: var(--color-accent-300);
+  transform: translateY(-100%);
+}
+/* 04 — the packet */
+.stage-packet {
+  position: absolute; top: 74%; left: 50%;
+  width: 150px; height: 186px; margin-left: -75px;
+  transform: translateY(-100%) scale(.6);
+  transform-origin: 50% 100%;
+  background: var(--color-bg);
+  border: var(--rule) solid var(--color-text);
+  opacity: 0;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  gap: 6px; text-align: center; padding: 10px;
+}
+.stage-packet b { font-size: 13px; font-weight: 800; letter-spacing: .04em; }
+.stage-packet span { font-size: 11px; color: var(--color-neutral-700); }
+
+/* Labels, caption and the progress rule under the panel */
+.stage-steps { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 16px; }
+.stage-steps span {
+  font-size: 13px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  /* Solid ramp steps, not opacity — faded ink fails contrast at this size. */
+  color: var(--color-neutral-700);
+}
+.stage-steps span.is-active { color: var(--color-accent-700); }
+.stage-caption { font-size: 14.5px; color: var(--color-neutral-800); margin: 10px 0 0; min-height: 3em; }
+.stage-progress { height: var(--rule); background: var(--color-neutral-300); margin-top: 10px; }
+.stage-progress i { display: block; height: 100%; width: 0; background: var(--color-accent); }
+
+@media (max-width: 760px) {
+  /* A 100vh stage cannot carry a photograph and the panel on a phone. */
+  .story { height: 260vh; }
+  .story-stage { padding-top: 132px; }
+  .stage-panel { min-height: 300px; }
+  .story-photo { display: none; }
 }

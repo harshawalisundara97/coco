@@ -35,6 +35,32 @@ rebuilt for this shop. The system, in short:
   → bulk → FAQ → contact → accent closing banner → footer
 - A fixed cart bar rises from the bottom as soon as a pack is chosen
 
+### "Tree to packet" — the scroll story
+
+Above *How it's made*: a 300vh section whose stage sticks to the top and plays
+through four windows as you scroll past it. A palm drops a nut, the nut falls
+and splits, grated coconut piles up off the ground rule, and a packet scales in.
+
+It is driven by **scroll position, never a timer** — `p = -rect.top / (rect.height
+- innerHeight)`, read on a passive listener throttled with `requestAnimationFrame`
+and repainted only when `p` moves more than 0.004. Nothing animates on its own,
+so it is already safe under `prefers-reduced-motion` with no extra handling. The
+palm's recoil as the nut lets go is one damped swing off the same `p`, not a loop.
+
+Stage windows, all anchored to a ground rule at 74% of the panel: fall `0→0.42`,
+split `0.42→0.58`, grate `0.56→0.78`, pack `0.76→1`. The palm is sized as a
+percentage of the panel rather than in fixed pixels, so it always fits between
+the ground rule and the top edge whatever height the stage gets.
+
+### Glassmorphism
+
+Frosted glass is applied to the three surfaces that actually sit *over*
+something: the hero plate (over the photograph), the sticky nav, and the cart
+bar. The flat 2px-ruled content cards stay opaque — glass over a flat paper
+background reads as nothing. Every glass rule sits behind an `@supports`
+query with the solid fill as the fallback, so text never lands on bare
+photography where `backdrop-filter` is unsupported.
+
 Two deliberate departures from the handoff, both because there is now real
 photography where the handoff assumed placeholders:
 
@@ -44,9 +70,6 @@ photography where the handoff assumed placeholders:
 2. **Pack plates are square, not 4:3.** A standing pouch in a landscape frame
    leaves the neighbouring packs crowding the shot; a square frame lets the
    pack the card is actually selling dominate.
-
-**Not built:** the handoff's 300vh scroll-driven "tree to packet" sequence.
-Everything else in the handoff is here.
 
 ## Configure
 

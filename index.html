@@ -6,7 +6,7 @@
 <title>KussiAmma.lk — Fresh grated coconut, cash on delivery</title>
 <meta name="description" content="Fresh grated coconut in 100g, 250g, 500g and 1kg packs, plus first-press coconut milk. Order online, pay cash at the door or by bank transfer. Island-wide delivery.">
 <link rel="icon" href="assets/photos/pack-250g.jpg">
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
 
@@ -180,6 +180,67 @@
         <article class="card"><h3>Graded and weighed</h3><p>Every pack is weighed, not scooped. A kilo is a kilo, sealed and dated.</p></article>
         <article class="card"><h3>One price per kilo</h3><p>Rs 1,000 a kilo at every size. The small pack is not punished.</p></article>
         <article class="card"><h3>We call before we come</h3><p>No order leaves without a phone call. Change it or cancel on that call.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Tree to packet — scroll-driven story ─────────────────────────── -->
+  <section class="story" id="story" aria-label="Tree to packet">
+    <div class="story-stage">
+      <div class="wrap">
+        <p class="kicker">Tree to packet</p>
+        <h2 style="font-size:clamp(24px,3vw,36px);margin-bottom:20px">
+          Scroll: the nut falls, it splits, the white comes off, the packet fills.
+        </h2>
+
+        <div class="story-cols">
+          <div class="story-photo">
+            <img src="assets/photos/plate-nuts.jpg" alt="Coconuts from the grove" loading="lazy" width="900" height="600">
+          </div>
+
+          <div class="stage-col">
+            <div class="stage-panel" id="stagePanel">
+              <!-- The palm. Fronds and the hanging cluster are driven by scroll. -->
+              <div class="stage-tree" id="stageTree" aria-hidden="true">
+                <svg viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+                  <!-- trunk, rooted on the ground rule and leaning slightly right -->
+                  <path class="trunk" d="M74 220 C68 168, 64 122, 80 84"/>
+                  <g class="fronds" id="stageFronds">
+                    <path class="frond" d="M80 82 Q44 76 8 100 Q46 94 80 86 z"/>
+                    <path class="frond frond--accent" d="M80 82 Q46 54 18 58 Q50 70 80 86 z"/>
+                    <path class="frond" d="M80 82 Q60 46 56 16 Q76 50 84 82 z"/>
+                    <path class="frond" d="M80 82 Q100 46 112 20 Q92 52 86 82 z"/>
+                    <path class="frond frond--accent" d="M80 82 Q116 52 148 54 Q114 68 82 86 z"/>
+                    <path class="frond" d="M80 82 Q120 88 152 102 Q116 92 80 88 z"/>
+                  </g>
+                  <!-- the cluster it drops from -->
+                  <circle class="hanging" cx="70" cy="96" r="7"/>
+                  <circle class="hanging" cx="90" cy="98" r="6"/>
+                  <circle class="hanging" id="stageHanging" cx="80" cy="106" r="8"/>
+                </svg>
+              </div>
+              <div class="stage-guide"></div>
+              <div class="stage-ground"></div>
+              <div class="stage-nut" id="stageNut"></div>
+              <div class="stage-half stage-half--l" id="stageHalfL"></div>
+              <div class="stage-half stage-half--r" id="stageHalfR"></div>
+              <div class="stage-pile" id="stagePile"></div>
+              <div class="stage-packet" id="stagePacket">
+                <b>KUSSIAMMA.LK</b>
+                <span>Fresh grated coconut · 500 g</span>
+              </div>
+            </div>
+
+            <div class="stage-steps" id="stageSteps">
+              <span class="is-active">01 Harvest</span>
+              <span>02 Split</span>
+              <span>03 Grate</span>
+              <span>04 Pack</span>
+            </div>
+            <p class="stage-caption" id="stageCaption">A mature nut drops from the palm.</p>
+            <div class="stage-progress"><i id="stageProgress"></i></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -392,6 +453,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=3"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>
