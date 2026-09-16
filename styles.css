@@ -435,8 +435,21 @@ figure { margin: 0; }
   height: var(--rule); background: var(--color-text);
 }
 
-/* The palm the nut falls from. Rooted on the ground rule, and it leans with
-   the fall — the sway angle is set from scroll progress, never a timer. */
+/* The WebGL layer sits over the panel's ground rule and guide, which stay as
+   the design's furniture. Once it reports for duty the flat shapes below step
+   aside; if it never loads, they are the animation. */
+.stage-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: block;
+}
+.stage-panel:not(.has-3d) .stage-canvas { display: none; }
+.stage-panel.has-3d .stage-tree,
+.stage-panel.has-3d .stage-nut,
+.stage-panel.has-3d .stage-half,
+.stage-panel.has-3d .stage-pile,
+.stage-panel.has-3d .stage-packet { display: none; }
+
 .stage-tree {
   /* Sized against the panel, not in fixed pixels, so the palm always fits
      between the ground rule and the top edge whatever height the stage gets. */

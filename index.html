@@ -6,7 +6,7 @@
 <title>KussiAmma.lk — Fresh grated coconut, cash on delivery</title>
 <meta name="description" content="Fresh grated coconut in 100g, 250g, 500g and 1kg packs, plus first-press coconut milk. Order online, pay cash at the door or by bank transfer. Island-wide delivery.">
 <link rel="icon" href="assets/photos/pack-250g.jpg">
-<link rel="stylesheet" href="styles.css?v=9">
+<link rel="stylesheet" href="styles.css?v=10">
 </head>
 <body>
 
@@ -219,6 +219,7 @@
                   <circle class="hanging" id="stageHanging" cx="80" cy="106" r="8"/>
                 </svg>
               </div>
+              <canvas class="stage-canvas" id="stageCanvas" aria-hidden="true"></canvas>
               <div class="stage-guide"></div>
               <div class="stage-ground"></div>
               <div class="stage-nut" id="stageNut"></div>
@@ -434,8 +435,6 @@
     </div>
   </section>
 </main>
-
-<footer class="wrap">
   <div class="footer">
     <span>KUSSIAMMA.LK — fresh grated coconut. Cash on delivery or bank transfer.</span>
     <span><span data-seller="phone">—</span> · <a data-seller="email" href="mailto:">—</a></span>
@@ -453,6 +452,24 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=9"></script>
+<script src="app.js?v=10"></script>
+
+<!-- The story's WebGL layer. Pure enhancement: if the module fails to load,
+     is blocked, or finds no WebGL context, the DOM animation above stays. -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+  try {
+    const { createStory3D } = await import('./story-3d.js?v=2');
+    const panel = document.getElementById('stagePanel');
+    const canvas = document.getElementById('stageCanvas');
+    if (panel && canvas && createStory3D(panel, canvas)) {
+      panel.classList.add('has-3d');
+    }
+  } catch (err) {
+    console.info('Story 3D unavailable, keeping the flat version.', err);
+  }
+</script>
 </body>
 </html>
