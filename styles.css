@@ -1,21 +1,26 @@
 /* KussiAmma.lk — single-page coconut ordering site.
-   Built to the Modernist design handoff: paper ground, ink type, one hot
-   accent, zero corner radius and 2px rules doing all the structural work. */
+   Modernist structure — zero corner radius, 2px rules doing all the
+   structural work — on a tropical palette: cream ground, tan mid-tones,
+   deep green accent, picked to sit with the green on the packs. */
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap');
 
 :root {
-  --color-bg: #f3f2f2;
-  --color-surface: #eae9e9;
-  --color-text: #201e1d;
-  --color-accent: #ec3013;
-  --color-accent-700: #ae1800;
-  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --color-bg: #f7f2e7;          /* cream */
+  --color-surface: #ece2cd;     /* tan */
+  --color-text: #1e3026;        /* deep green, dark enough to act as ink */
+  --color-accent: #2d6a4f;      /* deep green */
+  --color-accent-700: #1b4732;  /* darker, for hover and pressed */
+  --color-divider: color-mix(in srgb, #1e3026 40%, transparent);
 
-  --color-accent-300: #ffc4b8;
-  --color-neutral-300: #d7d3d3;
-  --color-neutral-600: #7d7979;
-  --color-neutral-700: #605d5d;
-  --color-neutral-800: #444141;
+  /* Errors must not be green in a green palette, or they stop reading as
+     errors. A warm rust keeps the tropical family and still says "wrong". */
+  --color-error: #a3412a;
+
+  --color-accent-300: #b7d7c2;  /* pale green */
+  --color-neutral-300: #d9cdb4; /* tan rule */
+  --color-neutral-600: #8a7c62;
+  --color-neutral-700: #6b5f49;
+  --color-neutral-800: #4a4232;
 
   --font: "Archivo", system-ui, -apple-system, sans-serif;
 
@@ -132,7 +137,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* The plate needs a readable ground whatever photograph is behind it. */
 .hero::after {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(20,18,17,.62), rgba(20,18,17,.18) 62%, transparent);
+  background: linear-gradient(90deg, rgba(16,32,24,.66), rgba(16,32,24,.2) 62%, transparent);
   pointer-events: none;
 }
 .hero-inner { position: relative; z-index: 2; padding: clamp(40px, 6vw, 72px) 0; }
@@ -237,8 +242,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .input:focus { border-color: var(--color-accent); outline: none; }
 textarea.input { min-height: 88px; resize: vertical; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.err { display: none; font-size: 14px; font-weight: 600; color: var(--color-accent-700); margin-top: 5px; }
-.field.has-error .input { border-color: var(--color-accent-700); }
+.err { display: none; font-size: 14px; font-weight: 600; color: var(--color-error); margin-top: 5px; }
+.field.has-error .input { border-color: var(--color-error); }
 .field.has-error .err { display: block; }
 
 .pay-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 8px; }
@@ -270,9 +275,6 @@ fieldset legend { padding: 0; font-size: 13px; font-weight: 600; margin-bottom: 
 .sum-totals .grand b { font-size: 24px; }
 .ship-hint { font-size: 13px; font-weight: 600; color: var(--color-accent-700); margin: 10px 0 0; }
 
-.confirm .order-id { font-size: clamp(24px, 3vw, 36px); font-weight: 800; margin: 4px 0 12px; }
-.confirm-to { border-top: var(--rule) solid var(--color-divider); border-bottom: var(--rule) solid var(--color-divider); padding: 14px 0; margin: 16px 0; font-size: 14.5px; }
-.confirm-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 
 /* How it's made ───────────────────────────────────────────────────────── */
 .steps-rows { margin-top: 30px; }
@@ -291,8 +293,61 @@ figure { margin: 0; }
 .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); align-items: center; gap: 28px clamp(24px, 5vw, 80px); }
 
 /* Reviews ─────────────────────────────────────────────────────────────── */
-.reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 28px; }
-.review { border: var(--rule) solid var(--color-divider); padding: 26px; }
+/* A swipe rail rather than a grid: scroll-snap gives touch swiping free, and
+   the arrows are there for mice. */
+.reviews-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+}
+.reviews-nav { display: flex; gap: 8px; }
+/* Frosted arrows. There is a tinted band behind them to blur, so the glass
+   has something to work with; the solid fill stays as the fallback. */
+.rev-btn {
+  width: 48px; height: 48px;
+  border: 0; cursor: pointer;
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text) 22%, transparent);
+  color: var(--color-text);
+  font-size: 22px; line-height: 1;
+  transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .rev-btn {
+    background: color-mix(in srgb, var(--color-bg) 42%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+  }
+}
+.rev-btn:hover {
+  background: color-mix(in srgb, var(--color-accent) 88%, transparent);
+  color: var(--color-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-bg) 40%, transparent);
+}
+.rev-btn[disabled] { opacity: .4; cursor: not-allowed; }
+.rev-btn[disabled]:hover {
+  background: color-mix(in srgb, var(--color-bg) 42%, transparent);
+  color: var(--color-text);
+}
+
+.reviews {
+  display: grid; grid-auto-flow: column;
+  grid-auto-columns: minmax(270px, 1fr);
+  gap: 18px; margin-top: 28px;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  /* The rail advances itself and has arrows, so the bar is just noise —
+     hidden, not disabled: swiping and keyboard scrolling still work. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.reviews::-webkit-scrollbar { display: none; }
+@media (min-width: 900px) { .reviews { grid-auto-columns: minmax(300px, 1fr); } }
+.review {
+  border: var(--rule) solid var(--color-divider);
+  padding: 26px;
+  scroll-snap-align: start;
+  background: var(--color-bg);
+}
 .review blockquote { margin: 0 0 14px; font-size: 19px; font-weight: 800; line-height: 1.3; }
 .review figcaption { font-size: 13px; color: var(--color-neutral-600); }
 .placeholder-note { font-size: 12px; color: var(--color-neutral-600); margin-top: 14px; }
@@ -387,128 +442,145 @@ figure { margin: 0; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }
 
-/* ── "Tree to packet" — scroll-driven story ───────────────────────────────
-   The outer section is three viewports tall; the stage sticks to the top and
-   plays through four windows as the section scrolls past. Position-driven,
-   never time-driven, so there is nothing to pause under reduced motion. */
-.story {
+/* ── Product search ───────────────────────────────────────────────────── */
+.pack-search { margin-top: 26px; max-width: 460px; }
+.pack-search .input { min-height: 48px; }
+.search-count {
+  font-size: 13px; font-weight: 600; color: var(--color-neutral-600);
+  margin: 8px 0 0; min-height: 1.2em;
+}
+.packs-empty {
+  border: var(--rule) dashed var(--color-divider);
+  padding: 32px; text-align: center;
+  color: var(--color-neutral-800); font-size: 15px;
+}
+
+/* ── Expandable product detail ────────────────────────────────────────── */
+.pack-more {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 0; padding: 0;
+  margin: 0 0 16px;
+  font-size: 13px; font-weight: 800;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--color-accent); cursor: pointer;
+}
+.pack-more::after { content: "+"; font-size: 15px; }
+.pack-more[aria-expanded="true"]::after { content: "–"; }
+.pack-more:hover { color: var(--color-accent-700); }
+
+.pack-detail {
+  border-top: 1px solid var(--color-neutral-300);
+  margin: 0 0 16px; padding-top: 12px;
+  font-size: 14px; line-height: 1.65;
+  color: var(--color-neutral-800);
+}
+.pack-detail[hidden] { display: none; }
+.pack-detail dl { margin: 10px 0 0; font-size: 13.5px; }
+.pack-detail dl div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+.pack-detail dl div + div { border-top: 1px solid var(--color-neutral-300); }
+.pack-detail dt { color: var(--color-neutral-600); }
+.pack-detail dd { margin: 0; font-weight: 600; }
+
+/* ── Payment methods that are not live yet ────────────────────────────── */
+.pay-opts--soon { margin-bottom: 4px; }
+.pay-opt--soon span {
+  display: block; min-height: 44px; padding: 8px 12px;
+  text-align: center; font-size: 13.5px; font-weight: 600;
+  color: var(--color-neutral-600);
+  box-shadow: inset 0 0 0 1px var(--color-neutral-300);
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent, transparent 7px,
+    color-mix(in srgb, var(--color-neutral-300) 45%, transparent) 7px,
+    color-mix(in srgb, var(--color-neutral-300) 45%, transparent) 14px
+  );
+  cursor: not-allowed;
+}
+.pay-opt--soon b {
+  display: block; font-size: 11px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--color-accent); margin-top: 2px;
+}
+
+/* ── Order-placed popup ───────────────────────────────────────────────── */
+.modal {
+  position: fixed; inset: 0; z-index: 70;
+  display: grid; place-items: center;
+  padding: 20px;
+  background: color-mix(in srgb, var(--color-text) 55%, transparent);
+  opacity: 0; visibility: hidden;
+  transition: opacity .2s ease, visibility .2s;
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .modal { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+}
+.modal.is-open { opacity: 1; visibility: visible; }
+.modal-card {
   position: relative;
-  height: 300vh;
-  margin: clamp(40px, 6vw, 72px) 0;
-}
-.story-stage {
-  position: sticky; top: 0;
-  height: 100vh; max-height: 100vh;
-  overflow: hidden;
-  display: flex; flex-direction: column; justify-content: center;
-  /* Top padding clears the sticky nav, which shares the same top edge. */
-  padding: 84px 0 clamp(20px, 3vw, 40px);
-}
-.story-cols {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px clamp(24px, 4vw, 56px);
-  align-items: stretch;
-  min-height: 0;
-}
-.story-photo { overflow: hidden; min-height: 0; }
-.story-photo img { width: 100%; height: 100%; object-fit: cover; }
-
-/* The animation panel. Everything inside is anchored to the ground rule. */
-.stage-panel {
-  position: relative;
-  border: var(--rule) solid var(--color-divider);
-  overflow: hidden;
-  /* Grow into whatever the sticky stage can spare, but never below the height
-     the packet needs at full scale. */
-  flex: 1 1 auto;
-  min-height: 340px;
-  background: var(--color-bg);
-}
-.stage-col { display: flex; flex-direction: column; min-height: 0; }
-.stage-guide {
-  position: absolute; top: 0; bottom: 0; left: 50%;
-  width: var(--rule); margin-left: calc(var(--rule) / -2);
-  background: var(--color-divider); opacity: .25;
-}
-.stage-ground {
-  position: absolute; left: 0; right: 0; top: 74%;
-  height: var(--rule); background: var(--color-text);
-}
-
-/* The palm the nut falls from. Rooted on the ground rule, and it leans with
-   the fall — the sway angle is set from scroll progress, never a timer. */
-.stage-tree {
-  /* Sized against the panel, not in fixed pixels, so the palm always fits
-     between the ground rule and the top edge whatever height the stage gets. */
-  position: absolute; left: 20%; top: 74%;
-  height: 62%; aspect-ratio: 160 / 220; width: auto;
-  transform: translate(-50%, -100%) rotate(var(--sway, 0deg));
-  transform-origin: 50% 100%;
-}
-.stage-tree svg { width: 100%; height: 100%; overflow: visible; }
-.stage-tree .trunk { fill: none; stroke: var(--color-text); stroke-width: 8; stroke-linecap: round; }
-.stage-tree .fronds { transform-box: fill-box; transform-origin: 45% 92%; }
-.stage-tree .frond { fill: var(--color-text); }
-.stage-tree .frond--accent { fill: var(--color-accent); }
-.stage-tree .hanging { fill: var(--color-text); transition: opacity .2s ease; }
-
-/* 01 — the nut falls. It starts on the palm's hanging cluster (41.9% of the
-   panel) the instant it lets go, and lands on the ground rule at the centre. */
-.stage-nut {
-  position: absolute; left: 20%; top: 46%;
-  width: 64px; height: 64px; margin: -32px 0 0 -32px;
-  border-radius: 50%; background: var(--color-text);
-}
-/* 02 — it splits into two halves seated on the ground rule */
-.stage-half {
-  position: absolute; top: 74%; left: 50%;
-  width: 76px; height: 38px; margin-left: -38px;
-  border-radius: 38px 38px 0 0;
-  transform: translateY(-38px);
-  opacity: 0;
-}
-.stage-half--l { background: var(--color-text); }
-.stage-half--r { background: var(--color-accent); }
-/* 03 — grated coconut piles up from the ground rule */
-.stage-pile {
-  position: absolute; top: 74%; left: 50%;
-  width: 150px; margin-left: -75px;
-  height: 0;
-  background: var(--color-accent-300);
-  transform: translateY(-100%);
-}
-/* 04 — the packet */
-.stage-packet {
-  position: absolute; top: 74%; left: 50%;
-  width: 150px; height: 186px; margin-left: -75px;
-  transform: translateY(-100%) scale(.6);
-  transform-origin: 50% 100%;
+  width: min(520px, 100%); max-height: 88vh; overflow-y: auto;
   background: var(--color-bg);
   border: var(--rule) solid var(--color-text);
-  opacity: 0;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-  gap: 6px; text-align: center; padding: 10px;
+  padding: clamp(24px, 4vw, 40px);
+  transform: translateY(10px);
+  transition: transform .2s ease;
 }
-.stage-packet b { font-size: 13px; font-weight: 800; letter-spacing: .04em; }
-.stage-packet span { font-size: 11px; color: var(--color-neutral-700); }
-
-/* Labels, caption and the progress rule under the panel */
-.stage-steps { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 16px; }
-.stage-steps span {
-  font-size: 13px; font-weight: 600;
-  letter-spacing: .06em; text-transform: uppercase;
-  /* Solid ramp steps, not opacity — faded ink fails contrast at this size. */
-  color: var(--color-neutral-700);
+.modal.is-open .modal-card { transform: none; }
+.modal-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 44px; height: 44px;
+  border: 0; background: none; cursor: pointer;
+  font-size: 18px; line-height: 1; color: var(--color-neutral-600);
 }
-.stage-steps span.is-active { color: var(--color-accent-700); }
-.stage-caption { font-size: 14.5px; color: var(--color-neutral-800); margin: 10px 0 0; min-height: 3em; }
-.stage-progress { height: var(--rule); background: var(--color-neutral-300); margin-top: 10px; }
-.stage-progress i { display: block; height: 100%; width: 0; background: var(--color-accent); }
+.modal-close:hover { color: var(--color-text); }
+.placed-mark {
+  width: 56px; height: 56px; margin-bottom: 16px;
+  display: grid; place-items: center;
+  background: var(--color-accent); color: var(--color-bg);
+  font-size: 28px; font-weight: 800;
+}
+.modal-card h3 { font-size: clamp(22px, 3vw, 30px); margin-bottom: 12px; }
+.modal-card .order-id {
+  font-size: clamp(22px, 3vw, 32px); font-weight: 800;
+  letter-spacing: .02em; margin: 0 0 12px;
+}
+.placed-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 14px; }
+.placed-actions .btn { flex: 1 1 150px; }
 
-@media (max-width: 760px) {
-  /* A 100vh stage cannot carry a photograph and the panel on a phone. */
-  .story { height: 260vh; }
-  .story-stage { padding-top: 132px; }
-  .stage-panel { min-height: 300px; }
-  .story-photo { display: none; }
+/* ── WhatsApp contact float ───────────────────────────────────────────── */
+/* Square rather than the usual circle, so it belongs to a page built from
+   right angles. Sits above the cart bar, which owns the very bottom. */
+.wa {
+  position: fixed; right: 20px; bottom: 92px; z-index: 55;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 12px;
+}
+.wa-fab {
+  width: 56px; height: 56px;
+  display: grid; place-items: center;
+  border: 0; cursor: pointer;
+  background: var(--color-accent); color: var(--color-bg);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--color-text) 30%, transparent);
+  transition: background .15s ease, transform .15s ease;
+}
+.wa-fab:hover { background: var(--color-accent-700); }
+.wa-fab[aria-expanded="true"] { transform: scale(.94); }
+
+.wa-panel {
+  width: min(300px, calc(100vw - 40px));
+  background: var(--color-bg);
+  border: var(--rule) solid var(--color-text);
+  padding: 20px;
+  box-shadow: 0 12px 34px color-mix(in srgb, var(--color-text) 26%, transparent);
+}
+.wa-panel[hidden] { display: none; }
+.wa-panel h4 { font-size: 18px; margin-bottom: 8px; }
+.wa-panel p { font-size: 14px; color: var(--color-neutral-800); }
+.wa-num {
+  font-weight: 800; font-size: 17px;
+  color: var(--color-text) !important;
+  margin: 0 0 14px;
+}
+
+@media (max-width: 480px) {
+  .wa { right: 14px; bottom: 86px; }
+  .wa-fab { width: 52px; height: 52px; }
 }

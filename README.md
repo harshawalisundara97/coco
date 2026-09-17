@@ -1,6 +1,6 @@
 # KussiAmma.lk — single-page coconut ordering site
 
-Static site. No build step, no dependencies, no backend.
+Static site. No build step, no backend, no dependencies.
 Open `index.html`, or serve the folder:
 
 ```bash
@@ -17,59 +17,53 @@ python3 -m http.server 4173
 | Images | JPEGs in `assets/photos/`, derived from `src/` by `tools/build_images.py` |
 | Fonts | Archivo 400/600/800 from Google Fonts |
 | Cart storage | `localStorage` — survives a refresh or a closed tab |
-| Order delivery | Email: relay POST if configured, otherwise a pre-filled mail draft |
+| Order delivery | POSTed to a form relay, which emails the kitchen |
 
 Deploys as-is to Cloudflare Pages, Netlify, Vercel, GitHub Pages or any shared
 host — it is just files.
 
+## The customer's path
+
+Section order follows how someone actually shops, not how the business thinks:
+
+**hero → at a glance → 01 Pick your packs → 02 Checkout → why us → how it's
+made → the kitchen → delivery → reviews → bulk → FAQ → contact → closing**
+
+Browse and search the products, expand a card to read the detail, set
+quantities, and only then reach a form. A fixed cart bar rises from the bottom
+the moment something is chosen, and jumps to the checkout.
+
+- **Search** filters on name, size, description and the long detail text.
+  Multi-word queries narrow rather than widen, so "1 kg milk" means both.
+- **Read more** expands a fuller description and a spec list. Expanded cards
+  stay expanded across a search or a quantity change — the open set is held in
+  JS, not in the markup.
+- **Reviews** are a self-advancing rail: it steps one card every 4.2s and wraps
+  round at the end. It pauses on hover, on focus and while a finger is on it,
+  stops in a background tab, and does not run at all under
+  `prefers-reduced-motion`. Swipe works on touch; the scrollbar is hidden
+  because the arrows and autoplay make it noise.
+
 ## Design
 
-The page follows the **Modernist** handoff (`Cyclone Coco` design bundle),
-rebuilt for this shop. The system, in short:
+Modernist structure — **zero corner radius**, 2px rules doing the structural
+work, Archivo 800 for every heading — on a tropical palette:
 
-- Paper ground `#f3f2f2`, ink text `#201e1d`, one hot accent `#ec3013`
-- **Zero corner radius everywhere.** 2px rules do all the structural work
-- Archivo, weight 800 for every heading, tight `-0.015em` tracking
-- Section order is "buy first, read later": nav → hero → **order form** →
-  stats → packs → why-us → how it's made → the kitchen → delivery → reviews
-  → bulk → FAQ → contact → accent closing banner → footer
-- A fixed cart bar rises from the bottom as soon as a pack is chosen
-
-### "Tree to packet" — the scroll story
-
-Above *How it's made*: a 300vh section whose stage sticks to the top and plays
-through four windows as you scroll past it. A palm drops a nut, the nut falls
-and splits, grated coconut piles up off the ground rule, and a packet scales in.
-
-It is driven by **scroll position, never a timer** — `p = -rect.top / (rect.height
-- innerHeight)`, read on a passive listener throttled with `requestAnimationFrame`
-and repainted only when `p` moves more than 0.004. Nothing animates on its own,
-so it is already safe under `prefers-reduced-motion` with no extra handling. The
-palm's recoil as the nut lets go is one damped swing off the same `p`, not a loop.
-
-Stage windows, all anchored to a ground rule at 74% of the panel: fall `0→0.42`,
-split `0.42→0.58`, grate `0.56→0.78`, pack `0.76→1`. The palm is sized as a
-percentage of the panel rather than in fixed pixels, so it always fits between
-the ground rule and the top edge whatever height the stage gets.
+| Token | Value | Use |
+|---|---|---|
+| `--color-bg` | `#f7f2e7` | cream ground |
+| `--color-surface` | `#ece2cd` | tan bands |
+| `--color-text` | `#1e3026` | deep green, dark enough to act as ink |
+| `--color-accent` | `#2d6a4f` | deep green |
+| `--color-error` | `#a3412a` | rust — errors must not be green in a green palette |
 
 ### Glassmorphism
 
-Frosted glass is applied to the three surfaces that actually sit *over*
-something: the hero plate (over the photograph), the sticky nav, and the cart
-bar. The flat 2px-ruled content cards stay opaque — glass over a flat paper
-background reads as nothing. Every glass rule sits behind an `@supports`
-query with the solid fill as the fallback, so text never lands on bare
-photography where `backdrop-filter` is unsupported.
-
-Two deliberate departures from the handoff, both because there is now real
-photography where the handoff assumed placeholders:
-
-1. **Photographs stay in colour.** The handoff greyscales them
-   (`filter: grayscale(1)`), which made sense for stand-in images but would
-   throw away the green packaging the brand is built on.
-2. **Pack plates are square, not 4:3.** A standing pouch in a landscape frame
-   leaves the neighbouring packs crowding the shot; a square frame lets the
-   pack the card is actually selling dominate.
+Frosted glass goes only on surfaces that sit *over* something: the hero plate
+(over the photograph), the sticky nav, the cart bar, the review arrows and the
+order popup scrim. Flat content cards stay opaque — glass over a flat ground
+reads as nothing. Every glass rule sits behind an `@supports` query with a
+solid fill as fallback, so text never lands on bare photography.
 
 ## Configure
 
@@ -78,39 +72,53 @@ Everything the seller changes lives in the `CONFIGURE ME` block at the top of
 
 ```js
 const SELLER = {
-  email: 'orders@kussiamma.lk',   // ← where order emails arrive
-  phone: '+94771234567',
-  phoneLabel: '+94 77 123 4567',
-  whatsapp: '94771234567',        // country code + number, no '+'
+  email: 'ranjanawijerathne@gmail.com',
+  phone: '+94753916554',
+  phoneLabel: '+94 75 391 6554',
+  whatsapp: '94753916554',        // country code + number, no '+'
   bank: { bank: '…', name: '…', account: '…', branch: '…' }
 };
 
-const ORDER_ENDPOINT = '';
+const ORDER_ENDPOINT = 'https://formsubmit.co/ajax/ranjanawijerathne@gmail.com';
 const SHIPPING  = 300;            // flat delivery, LKR
 const FREE_OVER = 3000;           // free delivery above this
 ```
 
-The phone number, email and bank details are painted into the page from here,
-and the two delivery figures are interpolated into the stat row, the delivery
-card and the order summary — so each only needs editing once.
+Phone, email and bank details are painted into every place they appear from
+here — nav, hero, WhatsApp float, contact, footer, order popup. The two
+delivery figures are interpolated into the stat row, the delivery card and the
+order summary. Each only needs editing once.
 
-### Getting orders into the inbox automatically
+## How the order email works
 
-`ORDER_ENDPOINT` is empty by default, so placing an order opens the customer's
-mail app with the whole order pre-filled — they press send. It works with zero
-setup, but it depends on the customer having mail configured.
+Pressing **Submit order** POSTs the order to `ORDER_ENDPOINT` as flat labelled
+fields — reference, customer, phone, address, window, items, totals, payment
+method — which the relay turns into a readable table and emails to the address
+above. The customer sends nothing; they just see the order-placed popup.
 
-Set an endpoint and the order is POSTed straight through instead:
+**One-time setup.** FormSubmit needs the address activated once:
 
-```js
-const ORDER_ENDPOINT = 'https://formsubmit.co/ajax/orders@kussiamma.lk';
-```
+1. Place a test order on the live site.
+2. FormSubmit emails `ranjanawijerathne@gmail.com` asking to confirm.
+3. Open it and press the link.
 
-FormSubmit is free and needs no account — the first order triggers a one-time
-confirmation email to that address. Formspree, Web3Forms or Basin work the
-same way. If the POST fails the page falls back to the mail draft on its own,
-so an order is never silently lost. The confirmation panel also offers
-WhatsApp and a call button.
+From then on every order arrives on its own. Until it is activated the POST
+comes back `success: "false"`, the page detects that and falls back to opening
+a pre-filled email draft, so **no order is ever lost** — it just needs a press
+of send. The popup says which of the two happened.
+
+Two things worth knowing:
+
+- Order details (name, phone, address) pass through **formsubmit.co**, a third
+  party. That is normal for a small shop, but it is a real data-handling
+  choice. The alternative is a serverless function on the same host sending
+  through Resend or Brevo — about 30 lines, still free, nothing third-party in
+  the middle.
+- The address sits in the client-side source, so scrapers can read it.
+  FormSubmit offers a hashed-token endpoint that hides it; swap the URL for the
+  token form once the account exists.
+
+Formspree, Web3Forms and Basin all work the same way if you prefer one of them.
 
 ## Products
 
@@ -125,6 +133,8 @@ Two lines: **fresh grated coconut** in 100 g / 250 g / 500 g / 1 kg, and
   unit: '250 g',
   price: 250,             // LKR, integer
   desc: 'Short shelf-talker line.',
+  detail: 'The paragraph behind Read more.',
+  spec: { Yield: '…', Keeps: '…', Pack: '…' },
   img: 'assets/photos/pack-250g.jpg'
 }
 ```
@@ -132,6 +142,19 @@ Two lines: **fresh grated coconut** in 100 g / 250 g / 500 g / 1 kg, and
 > **The prices are placeholders.** Grated coconut is set at a flat Rs 1,000
 > per kilo, which the packs heading states in so many words — change both
 > together, or the page contradicts itself.
+
+## Payment
+
+Cash on delivery and bank transfer are live. Credit/debit card and online
+payment appear as **greyed, hatched, non-interactive tiles marked "Coming
+soon"** — visible so customers know they are planned, but they are plain
+`<span>`s with no radio inside, so nobody can pick a method the shop cannot
+take. The FAQ says the same.
+
+When a gateway does arrive (PayHere, Stripe, onepay) it replaces the
+`deliverOrder` step. It needs a server-side secret, so it also needs a
+serverless function; Cloudflare Pages, Netlify and Vercel all provide those
+free.
 
 ## Images
 
@@ -153,12 +176,12 @@ which is what keeps the size badge at the bottom of the pouch inside the frame.
 Measure those numbers against the source, don't guess them. The script needs
 Pillow (`pip3 install Pillow`).
 
-## Not here yet
+## Before launch
 
-- **Card payments.** No card field exists anywhere on this site, by design —
-  a gateway (PayHere, Stripe, onepay) replaces the `deliverOrder` step when you
-  add one. It needs a server-side secret, so it also needs a serverless
-  function; Cloudflare Pages, Netlify and Vercel all provide those free.
-- **Stock levels, order history, admin.** Those need a backend.
-- **Placeholders to replace before launch:** seller phone/email/bank, the
-  kitchen address, the three review quotes, and every price.
+- **Every price** — all seven are invented.
+- **The kitchen address** in the contact section.
+- **The eight review quotes** — written as placeholders and labelled as such
+  on the page.
+- **Bank account details** — currently a placeholder account number.
+- **Activate the FormSubmit address** (see above), then place one real test
+  order and confirm it lands.

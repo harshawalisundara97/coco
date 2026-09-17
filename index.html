@@ -6,7 +6,7 @@
 <title>KussiAmma.lk — Fresh grated coconut, cash on delivery</title>
 <meta name="description" content="Fresh grated coconut in 100g, 250g, 500g and 1kg packs, plus first-press coconut milk. Order online, pay cash at the door or by bank transfer. Island-wide delivery.">
 <link rel="icon" href="assets/photos/pack-250g.jpg">
-<link rel="stylesheet" href="styles.css?v=11">
+<link rel="stylesheet" href="styles.css?v=15">
 </head>
 <body>
 
@@ -54,17 +54,48 @@
     </div>
   </section>
 
-  <!-- ── Order (buy first, read later) ────────────────────────────────── -->
-  <section class="section" id="order">
+  <!-- ── At a glance ──────────────────────────────────────────────────── -->
+  <section class="wrap">
+    <div class="stats">
+      <div class="stat"><b>4 sizes</b><span>100 g · 250 g · 500 g · 1 kg</span></div>
+      <div class="stat"><b>Same day</b><span>Grated the morning it ships</span></div>
+      <div class="stat"><b id="statFree">Rs 3,000</b><span>Order above this, delivery free</span></div>
+      <div class="stat"><b>COD</b><span>Pay cash at the door</span></div>
+    </div>
+  </section>
+
+  <!-- ── Packs ────────────────────────────────────────────────────────── -->
+  <section class="section" id="packs">
     <div class="wrap">
-      <p class="kicker">01 — Place the order</p>
-      <h2>Address in, cash at the door.</h2>
+      <p class="kicker">01 — Pick your packs</p>
+      <h2>One product, four sizes. Rs 1,000 per kilo, whichever you take.</h2>
+
+      <div class="pack-search">
+        <label class="sr-only" for="packSearch">Search products</label>
+        <input class="input" id="packSearch" type="search" autocomplete="off"
+               placeholder="Search — try “1 kg”, “milk”, “sambol”…">
+        <p class="search-count" id="searchCount" role="status" aria-live="polite"></p>
+      </div>
+
+      <div id="packGroups"></div>
+
+      <p class="footnote">
+        Keep grated coconut sealed and cold. Use within three days of delivery,
+        or freeze the pack whole on the day it arrives.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Checkout ─────────────────────────────────────────────────────── -->
+  <section class="section" id="order" style="background:var(--color-surface)">
+    <div class="wrap">
+      <p class="kicker">02 — Checkout</p>
+      <h2>Your details, then we call to confirm.</h2>
       <p class="lede" style="margin-bottom:26px">
-        We call to confirm every order before it leaves. Nothing is charged online.
+        Nothing is charged online. You pay when the order reaches your door.
       </p>
 
       <div class="order-grid">
-        <!-- Form, replaced by the confirmation panel after a valid submit -->
         <div class="panel" id="formPanel">
           <form id="checkoutForm" novalidate>
             <div class="field">
@@ -102,9 +133,9 @@
             <div class="field">
               <label for="slot">Delivery run</label>
               <select class="input" id="slot" name="slot">
-                <option>Wednesday, 8 a.m. – 4 p.m.</option>
-                <option>Saturday, 8 a.m. – 4 p.m.</option>
-                <option>Either day, call me first</option>
+                <option>Morning — 8 a.m. to 12 noon</option>
+                <option>Afternoon — 12 noon to 4 p.m.</option>
+                <option>Any time — call me first</option>
               </select>
             </div>
             <div class="field">
@@ -124,15 +155,23 @@
                   <span>Bank transfer</span>
                 </label>
               </div>
+
+              <!-- Shown so customers know card is coming, disabled so nobody
+                   can pick a method we cannot actually take yet. -->
+              <div class="pay-opts pay-opts--soon" aria-hidden="true">
+                <span class="pay-opt pay-opt--soon"><span>Credit / debit card<b>Coming soon</b></span></span>
+                <span class="pay-opt pay-opt--soon"><span>Online payment<b>Coming soon</b></span></span>
+              </div>
+
               <div class="bank-box" id="bankInline" data-bank hidden></div>
             </fieldset>
 
-            <button class="btn btn--primary btn--block" type="submit" id="placeOrder">Place order</button>
+            <button class="btn btn--primary btn--block" type="submit" id="placeOrder">Submit order</button>
             <p class="err" id="cartErr" role="alert" style="text-align:center">Choose at least one pack first.</p>
+            <p class="fine">We email the order to the kitchen and call you back to confirm.</p>
           </form>
         </div>
 
-        <!-- Live order summary -->
         <aside class="panel panel--summary" aria-label="Your order">
           <p class="kicker">Your order</p>
           <div class="sum-lines" id="sumLines"></div>
@@ -147,100 +186,16 @@
     </div>
   </section>
 
-  <!-- ── At a glance ──────────────────────────────────────────────────── -->
-  <section class="wrap">
-    <div class="stats">
-      <div class="stat"><b>4 sizes</b><span>100 g · 250 g · 500 g · 1 kg</span></div>
-      <div class="stat"><b>Same day</b><span>Grated the morning it ships</span></div>
-      <div class="stat"><b id="statFree">Rs 3,000</b><span>Order above this, delivery free</span></div>
-      <div class="stat"><b>COD</b><span>Pay cash at the door</span></div>
-    </div>
-  </section>
-
-  <!-- ── Packs ────────────────────────────────────────────────────────── -->
-  <section class="section" id="packs">
-    <div class="wrap">
-      <p class="kicker">02 — Pick your packs</p>
-      <h2>One product, four sizes. Rs 1,000 per kilo, whichever you take.</h2>
-      <div id="packGroups"></div>
-      <p class="footnote">
-        Keep grated coconut sealed and cold. Use within three days of delivery,
-        or freeze the pack whole on the day it arrives.
-      </p>
-    </div>
-  </section>
-
   <!-- ── Why buy from us ──────────────────────────────────────────────── -->
-  <section class="section" style="background:var(--color-surface)">
+  <section class="section">
     <div class="wrap">
       <p class="kicker">Why buy from us</p>
-      <h2 style="margin-bottom:26px">No scraping, no guessing</h2>
+      <h2 style="margin-bottom:26px">Grated to one standard, every day</h2>
       <div class="grid-4">
-        <article class="card"><h3>No scraping, no grating</h3><p>The nut is husked, split and grated for you. You open a pack and cook.</p></article>
-        <article class="card"><h3>Graded and weighed</h3><p>Every pack is weighed, not scooped. A kilo is a kilo, sealed and dated.</p></article>
-        <article class="card"><h3>One price per kilo</h3><p>Rs 1,000 a kilo at every size. The small pack is not punished.</p></article>
-        <article class="card"><h3>We call before we come</h3><p>No order leaves without a phone call. Change it or cancel on that call.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Tree to packet — scroll-driven story ─────────────────────────── -->
-  <section class="story" id="story" aria-label="Tree to packet">
-    <div class="story-stage">
-      <div class="wrap">
-        <p class="kicker">Tree to packet</p>
-        <h2 style="font-size:clamp(24px,3vw,36px);margin-bottom:20px">
-          Scroll: the nut falls, it splits, the white comes off, the packet fills.
-        </h2>
-
-        <div class="story-cols">
-          <div class="story-photo">
-            <img src="assets/photos/plate-nuts.jpg" alt="Coconuts from the grove" loading="lazy" width="900" height="600">
-          </div>
-
-          <div class="stage-col">
-            <div class="stage-panel" id="stagePanel">
-              <!-- The palm. Fronds and the hanging cluster are driven by scroll. -->
-              <div class="stage-tree" id="stageTree" aria-hidden="true">
-                <svg viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
-                  <!-- trunk, rooted on the ground rule and leaning slightly right -->
-                  <path class="trunk" d="M74 220 C68 168, 64 122, 80 84"/>
-                  <g class="fronds" id="stageFronds">
-                    <path class="frond" d="M80 82 Q44 76 8 100 Q46 94 80 86 z"/>
-                    <path class="frond frond--accent" d="M80 82 Q46 54 18 58 Q50 70 80 86 z"/>
-                    <path class="frond" d="M80 82 Q60 46 56 16 Q76 50 84 82 z"/>
-                    <path class="frond" d="M80 82 Q100 46 112 20 Q92 52 86 82 z"/>
-                    <path class="frond frond--accent" d="M80 82 Q116 52 148 54 Q114 68 82 86 z"/>
-                    <path class="frond" d="M80 82 Q120 88 152 102 Q116 92 80 88 z"/>
-                  </g>
-                  <!-- the cluster it drops from -->
-                  <circle class="hanging" cx="70" cy="96" r="7"/>
-                  <circle class="hanging" cx="90" cy="98" r="6"/>
-                  <circle class="hanging" id="stageHanging" cx="80" cy="106" r="8"/>
-                </svg>
-              </div>
-              <div class="stage-guide"></div>
-              <div class="stage-ground"></div>
-              <div class="stage-nut" id="stageNut"></div>
-              <div class="stage-half stage-half--l" id="stageHalfL"></div>
-              <div class="stage-half stage-half--r" id="stageHalfR"></div>
-              <div class="stage-pile" id="stagePile"></div>
-              <div class="stage-packet" id="stagePacket">
-                <b>KUSSIAMMA.LK</b>
-                <span>Fresh grated coconut · 500 g</span>
-              </div>
-            </div>
-
-            <div class="stage-steps" id="stageSteps">
-              <span class="is-active">01 Harvest</span>
-              <span>02 Split</span>
-              <span>03 Grate</span>
-              <span>04 Pack</span>
-            </div>
-            <p class="stage-caption" id="stageCaption">A mature nut drops from the palm.</p>
-            <div class="stage-progress"><i id="stageProgress"></i></div>
-          </div>
-        </div>
+        <article class="card"><h3>One consistent grade</h3><p>Same cut, same moisture, same white every single pack. You are not re-learning the recipe each time you buy.</p></article>
+        <article class="card"><h3>Weighed, sealed, date-stamped</h3><p>Every pack is weighed on a calibrated scale, not scooped, then sealed cold and stamped with the packing date. A kilo is a kilo.</p></article>
+        <article class="card"><h3>Nothing added, ever</h3><p>Coconut and nothing else — no preservative, no sugar, no colour, no anti-caking agent. Prepared in a cleaned, food-grade kitchen.</p></article>
+        <article class="card"><h3>Rejected if it is not right</h3><p>Anything off-colour, dry or past its morning does not go on the van. Check the seal and date before you pay — hand it back and pay nothing.</p></article>
       </div>
     </div>
   </section>
@@ -294,8 +249,8 @@
         <h2>Small kitchen, short list, local run</h2>
         <p class="lede">
           KussiAmma.lk is a small operation: a handful of people, one product
-          done properly, and a van that goes out twice a week. We would rather
-          sell out by Wednesday than grate on Monday for Friday.
+          done properly, and a van that goes out every day. We would rather
+          sell out by lunchtime than grate on Monday for Friday.
         </p>
       </div>
       <figure class="plate">
@@ -308,10 +263,10 @@
   <section class="section" id="delivery">
     <div class="wrap">
       <p class="kicker">Delivery &amp; cash on delivery</p>
-      <h2 style="margin-bottom:26px">Two runs a week</h2>
+      <h2 style="margin-bottom:26px">We deliver every day</h2>
       <div class="grid-4">
-        <article class="card"><h3>Where we deliver</h3><p>Colombo and suburbs on both runs. Elsewhere on the island by courier, one day longer.</p></article>
-        <article class="card"><h3>When it arrives</h3><p>Wednesday and Saturday, 8 a.m. to 4 p.m. We call on the morning of the run.</p></article>
+        <article class="card"><h3>Where we deliver</h3><p>Colombo and suburbs every day. Elsewhere on the island by courier, one day longer.</p></article>
+        <article class="card"><h3>When it arrives</h3><p>Every day, 8 a.m. to 4 p.m. Pick a morning or afternoon window and we call before we set out.</p></article>
         <article class="card"><h3>What you pay</h3><p id="deliveryCopy">Packs plus Rs 300 delivery. Free above Rs 3,000. Cash at the door or bank transfer.</p></article>
         <article class="card"><h3>If something is wrong</h3><p>Check the seal and the packing date before you pay. Anything wrong, hand it back and pay nothing.</p></article>
       </div>
@@ -321,9 +276,20 @@
   <!-- ── Reviews ──────────────────────────────────────────────────────── -->
   <section class="section" style="background:var(--color-surface)">
     <div class="wrap">
-      <p class="kicker">Reviews</p>
-      <h2>What buyers say</h2>
-      <div class="reviews">
+      <div class="reviews-head">
+        <div>
+          <p class="kicker">Reviews</p>
+          <h2>What buyers say</h2>
+        </div>
+        <div class="reviews-nav">
+          <button type="button" class="rev-btn" id="revPrev" aria-label="Previous reviews">‹</button>
+          <button type="button" class="rev-btn" id="revNext" aria-label="More reviews">›</button>
+        </div>
+      </div>
+
+      <!-- Swipeable on touch, arrows on desktop. Scroll-snap does the work. -->
+      <div class="reviews" id="reviews" tabindex="0" role="region"
+           aria-label="Customer reviews, scroll sideways for more">
         <figure class="review">
           <blockquote>&ldquo;The 500 g pouch is exactly our week. No scraping on a work night any more.&rdquo;</blockquote>
           <figcaption>Home cook · 500 g pouch, monthly</figcaption>
@@ -336,7 +302,28 @@
           <blockquote>&ldquo;Ordered at night, called back in the morning, paid the driver in cash. Simple.&rdquo;</blockquote>
           <figcaption>Repeat buyer · 250 g packets</figcaption>
         </figure>
+        <figure class="review">
+          <blockquote>&ldquo;Same grate every single time. My milk toffee finally comes out the same twice.&rdquo;</blockquote>
+          <figcaption>Home baker · 250 g packets, fortnightly</figcaption>
+        </figure>
+        <figure class="review">
+          <blockquote>&ldquo;The 100 g packet means nothing goes to waste. I cook coconut twice a week, not daily.&rdquo;</blockquote>
+          <figcaption>Single household · 100 g packets</figcaption>
+        </figure>
+        <figure class="review">
+          <blockquote>&ldquo;Milk is thick and it separates in the fridge — which is how you know there is nothing in it.&rdquo;</blockquote>
+          <figcaption>Home cook · Coconut milk 400 ml</figcaption>
+        </figure>
+        <figure class="review">
+          <blockquote>&ldquo;Daily delivery changed how we plan. We order in the morning and cook with it that night.&rdquo;</blockquote>
+          <figcaption>Restaurant · 1 kg packs, most days</figcaption>
+        </figure>
+        <figure class="review">
+          <blockquote>&ldquo;A pack arrived slightly dry once. They took it back at the door and did not charge us.&rdquo;</blockquote>
+          <figcaption>Repeat buyer · 500 g pouch</figcaption>
+        </figure>
       </div>
+
       <p class="placeholder-note">Placeholder copy — replace with real customer quotes before launch.</p>
     </div>
   </section>
@@ -380,7 +367,7 @@
       <div class="faq">
         <details>
           <summary>Can I pay online by card?</summary>
-          <p>No. There is no card payment on this site at all. Pay the delivery man in cash, or transfer to our bank account after you order.</p>
+          <p>Not yet — card payment is being set up now and goes live shortly. For the moment, pay the delivery man in cash or transfer to our bank account after you order.</p>
         </details>
         <details>
           <summary>How long does grated coconut keep?</summary>
@@ -392,7 +379,7 @@
         </details>
         <details>
           <summary>Where do you deliver?</summary>
-          <p>Colombo and suburbs on the Wednesday and Saturday runs. The rest of the island goes by courier and takes one day longer.</p>
+          <p>Colombo and suburbs every day. The rest of the island goes by courier and takes one day longer.</p>
         </details>
         <details>
           <summary>What is in the pack?</summary>
@@ -412,13 +399,13 @@
           <div><b>Phone &amp; WhatsApp</b><a data-seller="tel" href="tel:"><span data-seller="phone">—</span></a></div>
           <div><b>Email</b><a data-seller="email" href="mailto:">—</a></div>
           <div><b>Kitchen &amp; pickup</b>Address to be confirmed, Colombo</div>
-          <div><b>Hours</b>Monday to Saturday, 7 a.m. – 6 p.m.</div>
+          <div><b>Hours</b>Every day, 7 a.m. – 6 p.m.</div>
         </div>
         <p class="placeholder-note">Address is a placeholder — replace before launch.</p>
       </div>
       <figure class="plate">
         <img src="assets/photos/plate-packing.jpg" alt="Packs ready to go out" loading="lazy" width="900" height="600">
-        <figcaption>Packing for the Wednesday run</figcaption>
+        <figcaption>Packing for the day        <figcaption>Packing for the Wednesday run</figcaption>rsquo;s run</figcaption>
       </figure>
     </div>
   </section>
@@ -453,6 +440,46 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=11"></script>
+<!-- ── WhatsApp contact float ─────────────────────────────────────────── -->
+<div class="wa">
+  <div class="wa-panel" id="waPanel" hidden>
+    <p class="kicker">Chat with us</p>
+    <h4>Ask about an order</h4>
+    <p>Sizes, delivery, a change to an order you already placed — message us
+       and a person answers.</p>
+    <p class="wa-num"><span data-seller="phone">—</span></p>
+    <a class="btn btn--primary btn--block" data-seller="wa" href="#"
+       target="_blank" rel="noopener">Open WhatsApp</a>
+  </div>
+
+  <button class="wa-fab" id="waToggle" aria-expanded="false" aria-controls="waPanel">
+    <span class="sr-only">Contact us on WhatsApp</span>
+    <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false">
+      <path fill="currentColor" d="M16.04 4c-6.6 0-11.96 5.36-11.96 11.96 0 2.11.55 4.16 1.6 5.98L4 28l6.23-1.63a11.9 11.9 0 0 0 5.81 1.48h.01c6.6 0 11.95-5.36 11.95-11.96 0-3.19-1.24-6.19-3.5-8.45A11.86 11.86 0 0 0 16.04 4zm0 21.79h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.22-3.75.98 1-3.65-.24-.38a9.86 9.86 0 0 1-1.51-5.27c0-5.48 4.46-9.94 9.94-9.94 2.66 0 5.15 1.04 7.03 2.92a9.88 9.88 0 0 1 2.91 7.03c0 5.48-4.46 9.94-9.94 9.94zm5.45-7.44c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17c-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.09 3.2 5.07 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35z"/>
+    </svg>
+  </button>
+</div>
+
+<!-- ── Order placed popup ─────────────────────────────────────────────── -->
+<div class="modal" id="placedModal" role="dialog" aria-modal="true"
+     aria-labelledby="placedTitle" aria-hidden="true">
+  <div class="modal-card" role="document">
+    <button class="modal-close" id="placedClose" aria-label="Close">✕</button>
+
+    <div class="placed-mark" aria-hidden="true">✓</div>
+    <p class="kicker">Order received</p>
+    <h3 id="placedTitle">Thank you — your order is placed.</h3>
+
+    <p class="order-id" id="placedRef"></p>
+    <p class="lede" id="placedLead"></p>
+
+    <div class="bank-box" id="placedBank" hidden></div>
+
+    <div class="placed-actions" id="placedActions"></div>
+    <button class="btn btn--primary btn--block" id="placedDone">Done</button>
+  </div>
+</div>
+
+<script src="app.js?v=15"></script>
 </body>
 </html>

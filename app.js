@@ -7,10 +7,10 @@
   /* ══ CONFIGURE ME ══════════════════════════════════════════════════════
      Everything the seller changes lives in this one block.                */
   const SELLER = {
-    email: 'orders@kussiamma.lk',         // where order emails land
-    phone: '+94771234567',                // tel: link
-    phoneLabel: '+94 77 123 4567',
-    whatsapp: '94771234567',              // country code + number, no +
+    email: 'ranjanawijerathne@gmail.com',  // where order emails land
+    phone: '+94753916554',                 // tel: link
+    phoneLabel: '+94 75 391 6554',
+    whatsapp: '94753916554',               // country code + number, no +
     bank: {
       bank: 'Commercial Bank of Ceylon',
       name: 'KussiAmma (Pvt) Ltd',
@@ -19,11 +19,12 @@
     }
   };
 
-  /* Leave empty and the order opens a pre-filled email draft in the
-     customer's mail app. Paste a form-relay endpoint here — e.g.
-     'https://formsubmit.co/ajax/orders@kussiamma.lk' — and the order is
-     POSTed straight to the seller's inbox with no draft to send. */
-  const ORDER_ENDPOINT = '';
+  /* Orders POST straight here, so the customer never has to send anything.
+     FormSubmit needs one activation click: the first order sends a
+     confirmation mail to the address above — open it and press the link, and
+     every order after that arrives on its own. Until then the POST fails and
+     the page falls back to a pre-filled email draft, so nothing is lost. */
+  const ORDER_ENDPOINT = 'https://formsubmit.co/ajax/ranjanawijerathne@gmail.com';
 
   const SHIPPING = 300;
   const FREE_OVER = 3000;
@@ -37,42 +38,69 @@
       id: 'grated-100g', group: 'grated',
       name: '100 g packet', unit: '100 g', price: 100,
       desc: 'One-meal packet. Enough for a pol sambol without opening a bigger bag.',
+      detail: 'Grated the morning it goes out and sealed cold. One packet is about ' +
+              'two cupfuls loose — a pol sambol for three or four people, or the ' +
+              'coconut for a single pot of curry. Buy these if you cook coconut ' +
+              'once or twice a week and hate throwing half a pack away.',
+      spec: { Yield: 'About 2 cups', Keeps: '3 days chilled, 1 month frozen', Pack: 'Sealed pouch' },
       img: 'assets/photos/pack-100g.jpg'
     },
     {
       id: 'grated-250g', group: 'grated',
       name: '250 g packet', unit: '250 g', price: 250,
       desc: 'A week of home cooking. Resealable top, so it stays dry between uses.',
+      detail: 'The size most households settle on. Resealable, so you can take out ' +
+              'what a meal needs and keep the rest dry in the fridge. Enough for ' +
+              'sambol twice and a curry, or one batch of milk toffee.',
+      spec: { Yield: 'About 5 cups', Keeps: '3 days chilled, 1 month frozen', Pack: 'Resealable pouch' },
       img: 'assets/photos/pack-250g.jpg'
     },
     {
       id: 'grated-500g', group: 'grated',
       name: '500 g pouch', unit: '500 g', price: 500,
       desc: 'The size most households reorder. Sambol, curry, baking and sweets from one pouch.',
+      detail: 'A family week in one pouch: sambol, curry, baking and sweets without ' +
+              'reordering midweek. Freeze it whole on the day it lands and break ' +
+              'off what you need — it keeps its texture far better than a fridge does.',
+      spec: { Yield: 'About 10 cups', Keeps: '3 days chilled, 1 month frozen', Pack: 'Resealable pouch' },
       img: 'assets/photos/pack-500g.jpg'
     },
     {
       id: 'grated-1kg', group: 'grated',
       name: '1 kg pack', unit: '1 kg', price: 1000,
       desc: 'Kitchen and small-restaurant size. Take four or more and ask us for the trade rate.',
+      detail: 'Built for kitchens, bakeries and caterers. Same grate, same morning, ' +
+              'bigger bag. Take four or more a week and we will put you on a standing ' +
+              'order at the trade rate — call us rather than ordering here.',
+      spec: { Yield: 'About 20 cups', Keeps: '3 days chilled, 1 month frozen', Pack: 'Catering pouch' },
       img: 'assets/photos/pack-1kg.jpg'
     },
     {
       id: 'milk-200', group: 'milk',
       name: 'Coconut milk — 200 ml', unit: '200 ml', price: 280,
       desc: 'Single-cook size, so an opened pack never goes to waste.',
+      detail: 'First-press milk in a single-cook size. Pour the whole thing into one ' +
+              'pot and there is nothing left over to forget at the back of the fridge.',
+      spec: { Press: 'First press', Added: 'Nothing', Keeps: '5 days chilled, unopened' },
       img: 'assets/photos/milk-200.jpg'
     },
     {
       id: 'milk-400', group: 'milk',
       name: 'Coconut milk — 400 ml', unit: '400 ml', price: 480,
       desc: 'First press, thick. No gums, no stabilisers, no preservatives.',
+      detail: 'Thick first-press milk — it separates in the fridge because there is ' +
+              'nothing in it to stop it. Shake or warm it gently and it comes back. ' +
+              'No gums, no stabilisers, no preservatives, no added water.',
+      spec: { Press: 'First press', Added: 'Nothing', Keeps: '5 days chilled, unopened' },
       img: 'assets/photos/milk-400.jpg'
     },
     {
       id: 'milk-1l', group: 'milk',
       name: 'Coconut milk — 1 litre', unit: '1 litre', price: 1090,
       desc: 'Catering pack for kitchens and caterers. The same first-press milk.',
+      detail: 'The same first-press milk in a catering litre. For kitchens cooking ' +
+              'coconut daily; ask about a standing order if you take more than two a week.',
+      spec: { Press: 'First press', Added: 'Nothing', Keeps: '5 days chilled, unopened' },
       img: 'assets/photos/milk-1l.jpg'
     }
   ];
@@ -114,34 +142,77 @@
 
   /* ── Packs ─────────────────────────────────────────────────────────── */
 
-  function renderPacks() {
-    $('#packGroups').innerHTML = GROUPS.map((g) => {
-      const items = PRODUCTS.filter((p) => p.group === g.id);
-      if (!items.length) return '';
-      return `
-        <div class="pack-group">
-          <h3>${g.label}</h3>
-          <div class="packs">
-            ${items.map((p) => `
-              <article class="pack">
-                <div class="pack-photo">
-                  <img src="${p.img}" alt="${p.name}" loading="lazy" width="820" height="820">
-                </div>
-                <p class="eyebrow">${g.eyebrow}</p>
-                <h3>${p.name}</h3>
-                <p class="desc">${p.desc}</p>
-                <div class="pack-foot">
-                  <span class="price">${rupees(p.price)}<small>per ${p.unit}</small></span>
-                  <div class="stepper">
-                    <button type="button" data-step="-1" data-id="${p.id}" aria-label="One fewer ${p.name}">–</button>
-                    <span class="qty" aria-live="polite">${cart[p.id] || 0}</span>
-                    <button type="button" data-step="1" data-id="${p.id}" aria-label="One more ${p.name}">+</button>
-                  </div>
-                </div>
-              </article>`).join('')}
+  let query = '';
+  /* Which cards the customer has expanded. Kept outside the markup so a
+     re-render (search, or a quantity change) does not collapse them again. */
+  const expanded = new Set();
+
+  /** Everything worth matching a search against. */
+  const haystack = (p) =>
+    [p.name, p.unit, p.desc, p.detail, GROUPS.find((g) => g.id === p.group)?.label]
+      .join(' ').toLowerCase();
+
+  function matches(p) {
+    if (!query) return true;
+    // Every word must appear, so "1 kg milk" narrows rather than widens.
+    const hay = haystack(p);
+    return query.split(/\s+/).filter(Boolean).every((word) => hay.includes(word));
+  }
+
+  function packCard(p, g) {
+    const open = expanded.has(p.id);
+    const specs = Object.entries(p.spec || {})
+      .map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+
+    return `
+      <article class="pack">
+        <div class="pack-photo">
+          <img src="${p.img}" alt="${p.name}" loading="lazy" width="820" height="820">
+        </div>
+        <p class="eyebrow">${g.eyebrow}</p>
+        <h3>${p.name}</h3>
+        <p class="desc">${p.desc}</p>
+
+        <button type="button" class="pack-more" data-more="${p.id}"
+                aria-expanded="${open}" aria-controls="detail-${p.id}">
+          ${open ? 'Less' : 'Read more'}
+        </button>
+        <div class="pack-detail" id="detail-${p.id}"${open ? '' : ' hidden'}>
+          <p>${p.detail}</p>
+          ${specs ? `<dl>${specs}</dl>` : ''}
+        </div>
+
+        <div class="pack-foot">
+          <span class="price">${rupees(p.price)}<small>per ${p.unit}</small></span>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-id="${p.id}" aria-label="One fewer ${p.name}">–</button>
+            <span class="qty" aria-live="polite">${cart[p.id] || 0}</span>
+            <button type="button" data-step="1" data-id="${p.id}" aria-label="One more ${p.name}">+</button>
           </div>
-        </div>`;
-    }).join('');
+        </div>
+      </article>`;
+  }
+
+  function renderPacks() {
+    const shown = PRODUCTS.filter(matches);
+
+    $('#packGroups').innerHTML = shown.length
+      ? GROUPS.map((g) => {
+          const items = shown.filter((p) => p.group === g.id);
+          if (!items.length) return '';
+          return `
+            <div class="pack-group">
+              <h3>${g.label}</h3>
+              <div class="packs">${items.map((p) => packCard(p, g)).join('')}</div>
+            </div>`;
+        }).join('')
+      : `<p class="packs-empty">Nothing matches &ldquo;${query}&rdquo;.
+           We only sell grated coconut and coconut milk — try a size like
+           <strong>250 g</strong>, or clear the search.</p>`;
+
+    $('#searchCount').textContent = query
+      ? `${shown.length} of ${PRODUCTS.length} products`
+      : '';
   }
 
   /** Update just the readouts, so a stepper press does not rebuild the grid. */
@@ -231,113 +302,6 @@
     }));
   }
 
-  /* ── "Tree to packet" — scroll-driven story ────────────────────────────
-     Driven by scroll *position*, never by a timer, so it never plays on its
-     own and needs no special handling under prefers-reduced-motion. */
-
-  const STAGES = [
-    { from: 0,    to: 0.42, caption: 'A mature nut drops from the palm.' },
-    { from: 0.42, to: 0.58, caption: 'Husked and split, the water drained off.' },
-    { from: 0.56, to: 0.78, caption: 'The white is scraped from the shell the same morning.' },
-    { from: 0.76, to: 1,    caption: 'Weighed into the packet, sealed and date-stamped.' }
-  ];
-
-  const clamp01 = (n) => Math.min(1, Math.max(0, n));
-  /** How far through its own window `p` has travelled, as 0→1. */
-  const ramp = (p, { from, to }) => clamp01((p - from) / (to - from));
-
-  function initStory() {
-    const section = $('#story');
-    if (!section) return;
-
-    const nut = $('#stageNut');
-    const tree = $('#stageTree');
-    const fronds = $('#stageFronds');
-    const hanging = $('#stageHanging');
-    const halfL = $('#stageHalfL');
-    const halfR = $('#stageHalfR');
-    const pile = $('#stagePile');
-    const packet = $('#stagePacket');
-    const caption = $('#stageCaption');
-    const progress = $('#stageProgress');
-    const steps = [...$('#stageSteps').children];
-
-    let last = -1;
-    let queued = false;
-
-    function draw(p) {
-      // 01 — the nut lets go of the palm and falls to the ground rule,
-      // drifting to the centre line and turning as it goes.
-      const fall = ramp(p, STAGES[0]);
-      const fell = p >= STAGES[1].from;
-      // Hidden until it actually lets go, so it never sits on top of the crown.
-      nut.style.opacity = (fell || fall <= 0.03) ? 0 : 1;
-      nut.style.left = (20 + fall * 30) + '%';
-      nut.style.top = (46 + fall * 28) + '%';
-      nut.style.transform = `rotate(${fall * 300}deg)`;
-
-      // The palm recoils as the nut leaves, then settles — one damped swing
-      // rather than a loop, so nothing moves unless the page is scrolling.
-      const recoil = Math.sin(fall * Math.PI * 2) * (1 - fall) * 3.2;
-      tree.style.setProperty('--sway', recoil.toFixed(2) + 'deg');
-      fronds.style.transform = `rotate(${(-recoil * 1.6).toFixed(2)}deg)`;
-      // The nut it dropped leaves the cluster the moment it lets go.
-      hanging.style.opacity = fall > 0.04 ? 0 : 1;
-
-      // 02 — two halves seated on the rule separate to ±62px.
-      const split = ramp(p, STAGES[1]);
-      const gone = p >= STAGES[3].from;
-      const halfFade = gone ? 1 - ramp(p, STAGES[3]) : (fell ? 1 : 0);
-      halfL.style.opacity = halfFade;
-      halfR.style.opacity = halfFade;
-      halfL.style.transform = `translate(${-split * 62}px, -38px)`;
-      halfR.style.transform = `translate(${split * 62}px, -38px)`;
-
-      // 03 — the grated pile grows up off the ground rule.
-      const grate = ramp(p, STAGES[2]);
-      pile.style.height = (grate * 96) + 'px';
-      pile.style.opacity = halfFade;
-
-      // 04 — the packet scales up in its place.
-      const pack = ramp(p, STAGES[3]);
-      packet.style.opacity = pack;
-      packet.style.transform = `translateY(-100%) scale(${0.6 + pack * 0.4})`;
-
-      // Labels, caption and the progress rule.
-      let active = 0;
-      for (let i = STAGES.length - 1; i >= 0; i--) {
-        if (p >= STAGES[i].from) { active = i; break; }
-      }
-      steps.forEach((s, i) => s.classList.toggle('is-active', i === active));
-      caption.textContent = STAGES[active].caption;
-      progress.style.width = (p * 100) + '%';
-    }
-
-    function measure() {
-      const rect = section.getBoundingClientRect();
-      const range = rect.height - window.innerHeight;
-      const p = range > 0 ? clamp01(-rect.top / range) : 0;
-
-      // Ignore sub-pixel jitter; repaint only on a real move.
-      if (Math.abs(p - last) > 0.004) {
-        last = p;
-        draw(p);
-      }
-      queued = false;
-    }
-
-    function onScroll() {
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(measure);
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    draw(0);
-    onScroll();
-  }
-
   /* ── Checkout ──────────────────────────────────────────────────────── */
 
   const RULES = {
@@ -421,20 +385,56 @@
   const whatsappFor = (o) =>
     `https://wa.me/${SELLER.whatsapp}?text=${encodeURIComponent(orderText(o))}`;
 
-  /** POST to the relay if one is configured; the email draft is the fallback. */
+  /** The email body, as flat labelled fields so the relay renders a readable
+      table rather than a dump of nested JSON. */
+  function mailFields(o) {
+    const items = o.items
+      .map((i) => `${i.name}${i.name.includes(i.unit) ? '' : ` (${i.unit})`} × ${i.qty} = ${rupees(i.line)}`)
+      .join('\n');
+
+    return {
+      _subject: `New order ${o.ref} — ${o.name} — ${rupees(o.total)}`,
+      _template: 'table',
+      _captcha: 'false',
+
+      Reference: o.ref,
+      Placed: o.placed,
+
+      Customer: o.name,
+      Phone: o.phone,
+      Email: o.email || '—',
+      Address: o.address,
+      City: o.city,
+      'Postal code': o.postal || '—',
+      'Delivery window': o.slot,
+      Notes: o.notes || '—',
+
+      Items: items,
+      Packs: rupees(o.subtotal),
+      Delivery: o.shipping === 0 ? 'Free' : rupees(o.shipping),
+      Total: rupees(o.total),
+      'Payment method': o.pay
+    };
+  }
+
+  /** POST the order to the relay. The pre-filled draft is only a fallback for
+      when that fails — a blocked network, or the relay not yet activated. */
   async function deliverOrder(o) {
     if (!ORDER_ENDPOINT) return { sent: false };
     try {
       const res = await fetch(ORDER_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          _subject: `New order ${o.ref} — ${o.name} — ${rupees(o.total)}`,
-          order: o,
-          summary: orderText(o)
-        })
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(mailFields(o))
       });
-      return { sent: res.ok };
+      if (!res.ok) return { sent: false };
+
+      /* FormSubmit answers 200 even when the address is not activated yet,
+         with success:"false" in the body — so read it rather than trust the
+         status code. */
+      const body = await res.json().catch(() => null);
+      const ok = !body || String(body.success) !== 'false';
+      return { sent: ok };
     } catch {
       return { sent: false };
     }
@@ -449,33 +449,43 @@
       <div><span>Branch</span><span>${b.branch}</span></div>`;
   };
 
-  function showConfirmation(o, delivered) {
-    const day = o.slot.split(',')[0];
-    $('#formPanel').innerHTML = `
-      <div class="confirm">
-        <p class="kicker">Order received</p>
-        <p class="order-id">${o.ref}</p>
-        <p class="lede">
-          Thank you, ${o.name}. We will call ${o.phone} to confirm the
-          ${day} run. Keep ${rupees(o.total)} ready for the delivery man.
-        </p>
-        ${delivered ? '' : `
-          <p class="lede"><strong>One more step:</strong> your email app is opening with the
-          order filled in — press send and it reaches us. Prefer to talk? Call or WhatsApp.</p>`}
-        ${o.pay === 'Bank transfer' ? `<div class="bank-box">${bankRows()}</div>` : ''}
-        <div class="confirm-to">
-          <strong>Delivering to</strong><br>
-          ${o.address}${o.postal ? ', ' + o.postal : ''}<br>${o.city}
-        </div>
-        <div class="confirm-actions">
-          ${delivered ? '' : `<a class="btn btn--primary" href="${mailtoFor(o)}">Send the order email</a>`}
-          <a class="btn btn--ghost" href="${whatsappFor(o)}" target="_blank" rel="noopener">WhatsApp it</a>
-          <a class="btn btn--ghost" href="tel:${SELLER.phone}">Call us</a>
-          <button class="btn btn--ghost" type="button" id="againBtn">Place another order</button>
-        </div>
-      </div>`;
+  /* ── The order-placed popup ────────────────────────────────────────── */
 
-    $('#againBtn').addEventListener('click', () => location.reload());
+  const placed = () => $('#placedModal');
+
+  function openPlaced(o, delivered) {
+    // Slots now read "Morning — 8 a.m. to 12 noon"; keep just the word.
+    const slot = o.slot.split('—')[0].trim().toLowerCase();
+
+    $('#placedRef').textContent = o.ref;
+    $('#placedLead').innerHTML = delivered
+      ? `Thank you, ${o.name}. The order is with the kitchen. We will call
+         ${o.phone} to confirm your ${slot} delivery — keep ${rupees(o.total)}
+         ready for the delivery man.`
+      : `Thank you, ${o.name}. Your email app is opening with the order filled
+         in — <strong>press send</strong> and it reaches us. We will then call
+         ${o.phone} to confirm your ${slot} delivery.`;
+
+    const bank = $('#placedBank');
+    bank.hidden = o.pay !== 'Bank transfer';
+    if (!bank.hidden) bank.innerHTML = bankRows();
+
+    // Only offer the manual routes when the order did not send itself.
+    $('#placedActions').innerHTML = delivered ? '' : `
+      <a class="btn btn--primary" href="${mailtoFor(o)}">Send the order email</a>
+      <a class="btn btn--ghost" href="${whatsappFor(o)}" target="_blank" rel="noopener">WhatsApp it</a>
+      <a class="btn btn--ghost" href="tel:${SELLER.phone}">Call us</a>`;
+
+    placed().classList.add('is-open');
+    placed().setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    $('#placedDone').focus();
+  }
+
+  function closePlaced() {
+    placed().classList.remove('is-open');
+    placed().setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
   }
 
   /* ── Seller details into the markup ────────────────────────────────── */
@@ -507,9 +517,91 @@
     renderPacks();
     renderSummary();
     initRotator();
-    initStory();
+
+    /* Reviews rail. It advances itself, wrapping back to the first card at
+       the end; the arrows and a touch swipe both still drive it by hand. */
+    const rail = $('#reviews');
+    if (rail) {
+      const AUTO_MS = 4200;
+      const step = () => (rail.querySelector('.review')?.offsetWidth || 282) + 18;
+      const maxScroll = () => rail.scrollWidth - rail.clientWidth;
+
+      /* Wrapping means neither end is a dead stop, so the arrows stay live —
+         they only go flat when there is nothing to scroll at all. */
+      const syncArrows = () => {
+        const none = maxScroll() < 4;
+        $('#revPrev').disabled = none;
+        $('#revNext').disabled = none;
+      };
+
+      const go = (dir) => {
+        const max = maxScroll();
+        if (max < 4) return;
+        let next = rail.scrollLeft + dir * step();
+        if (next > max - 2) next = dir > 0 ? 0 : max;      // wrap forward
+        if (next < 0) next = max;                           // wrap backward
+        rail.scrollTo({ left: next, behavior: 'smooth' });
+      };
+
+      /* Autoplay, paused whenever someone is actually reading or touching it,
+         and off entirely for anyone who asked for less motion. */
+      const still = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let timer = null;
+      const stop = () => { clearInterval(timer); timer = null; };
+      const start = () => {
+        stop();
+        if (still.matches || document.hidden) return;
+        timer = setInterval(() => go(1), AUTO_MS);
+      };
+
+      ['pointerenter', 'focusin', 'touchstart'].forEach((ev) =>
+        rail.addEventListener(ev, stop, { passive: true }));
+      ['pointerleave', 'focusout', 'touchend'].forEach((ev) =>
+        rail.addEventListener(ev, start, { passive: true }));
+      $('.reviews-nav').addEventListener('pointerenter', stop);
+      $('.reviews-nav').addEventListener('pointerleave', start);
+
+      $('#revPrev').addEventListener('click', () => { go(-1); start(); });
+      $('#revNext').addEventListener('click', () => { go(1); start(); });
+
+      rail.addEventListener('scroll', syncArrows, { passive: true });
+      window.addEventListener('resize', syncArrows);
+      // Nothing should animate in a tab nobody is looking at.
+      document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+      still.addEventListener?.('change', start);
+
+      syncArrows();
+      start();
+    }
+
+    /* WhatsApp float. A toggle rather than a bare link, so the number and
+       what we answer are visible before anyone leaves the page. */
+    const waToggle = $('#waToggle');
+    const waPanel = $('#waPanel');
+    const setWa = (open) => {
+      waPanel.hidden = !open;
+      waToggle.setAttribute('aria-expanded', String(open));
+    };
+    waToggle.addEventListener('click', () => setWa(waPanel.hidden));
+    document.addEventListener('click', (e) => {
+      if (!waPanel.hidden && !e.target.closest('.wa')) setWa(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !waPanel.hidden) { setWa(false); waToggle.focus(); }
+    });
 
     $('#packGroups').addEventListener('click', (e) => {
+      const more = e.target.closest('[data-more]');
+      if (more) {
+        const id = more.dataset.more;
+        if (expanded.has(id)) expanded.delete(id);
+        else expanded.add(id);
+        renderPacks();
+        // Keep focus on the control the customer just pressed.
+        $(`[data-more="${id}"]`)?.focus();
+        return;
+      }
+
       const btn = e.target.closest('[data-step]');
       if (!btn) return;
       const id = btn.dataset.id;
@@ -518,10 +610,29 @@
       if (step > 0) toast(`${byId(id).name} added`);
     });
 
+    // Search, debounced lightly so typing does not rebuild the grid per key.
+    let searchTimer;
+    $('#packSearch').addEventListener('input', (e) => {
+      const next = e.target.value.trim().toLowerCase();
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        if (next === query) return;
+        query = next;
+        renderPacks();
+      }, 120);
+    });
+
     // Bank details appear inline the moment bank transfer is chosen.
     $('#checkoutForm').addEventListener('change', (e) => {
       if (e.target.name !== 'pay') return;
       $('#bankInline').hidden = e.target.value !== 'Bank transfer';
+    });
+
+    $('#placedClose').addEventListener('click', closePlaced);
+    $('#placedDone').addEventListener('click', closePlaced);
+    placed().addEventListener('click', (e) => { if (e.target === placed()) closePlaced(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && placed().classList.contains('is-open')) closePlaced();
     });
 
     $('#checkoutForm').addEventListener('submit', async (e) => {
@@ -545,12 +656,16 @@
       // Without a relay, hand the customer a pre-filled draft to send.
       if (!sent) window.location.href = mailtoFor(order);
 
-      showConfirmation(order, sent);
+      openPlaced(order, sent);
 
       cart = {};
       save();
+      form.reset();
+      $('#bankInline').hidden = true;
       renderPacks();
       renderSummary();
+      submit.disabled = false;
+      submit.textContent = 'Submit order';
     });
   }
 
