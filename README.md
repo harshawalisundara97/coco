@@ -176,6 +176,26 @@ which is what keeps the size badge at the bottom of the pouch inside the frame.
 Measure those numbers against the source, don't guess them. The script needs
 Pillow (`pip3 install Pillow`).
 
+### Logo
+
+The logo source is `assets/photos/src/logo.jpg`, a JPEG on a white card.
+`tools/build_logo.py` turns the white into transparency (colour-to-alpha, so
+the soft edges survive on any background) and writes:
+
+| File | Used for |
+|---|---|
+| `assets/logo.webp` | header (80px, 60px on phones) and footer (72px) |
+| `assets/favicon-32.png` | browser tab |
+| `assets/favicon-180.png` | iOS home-screen icon, on the cream page colour |
+
+```bash
+python3 tools/build_logo.py
+```
+
+The source is only 677×448. A larger original, ideally a PNG or SVG from
+whoever designed the logo, will look sharper on high-density screens.
+Drop it in as `logo.jpg` and rerun.
+
 ## Before launch
 
 - **Every price** — all seven are invented.

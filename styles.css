@@ -31,7 +31,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
 
 body {
   margin: 0;
@@ -109,11 +109,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
   display: flex; flex-wrap: wrap; align-items: center; gap: 16px;
   padding: 12px var(--gutter);
 }
-.brand {
-  font-weight: 800; font-size: 19px; letter-spacing: -0.02em;
-  text-decoration: none; text-transform: uppercase;
-}
-.brand span { color: var(--color-accent); }
+/* The logo carries its own colour and detail, so it is given height and
+   left alone — no filters, no frame. */
+.brand { display: block; line-height: 0; text-decoration: none; }
+.brand img { height: 80px; width: auto; }
 .nav-links { display: flex; flex-wrap: wrap; gap: 20px; margin-left: auto; }
 .nav-links a {
   font-size: 14px; font-weight: 600; text-decoration: none;
@@ -228,7 +227,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* Order ───────────────────────────────────────────────────────────────── */
 .order-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; align-items: start; }
 .panel { border: var(--rule) solid var(--color-divider); padding: clamp(24px, 3vw, 36px); background: var(--color-bg); }
-.panel--summary { position: sticky; top: 96px; }
+.panel--summary { position: sticky; top: 118px; }
 
 .field { margin-bottom: 16px; }
 .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
@@ -387,10 +386,12 @@ figure { margin: 0; }
 
 /* Footer ──────────────────────────────────────────────────────────────── */
 .footer {
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
   font-size: 13px; color: var(--color-neutral-800);
   padding: 32px 0 96px;
 }
+.footer-brand { display: flex; align-items: center; gap: 14px; }
+.footer-brand img { height: 72px; width: auto; flex: none; }
 
 /* Fixed cart bar ──────────────────────────────────────────────────────── */
 .cartbar {
@@ -432,6 +433,7 @@ figure { margin: 0; }
   /* The handoff wraps the nav on narrow widths rather than hiding it. */
   .nav-links { order: 3; width: 100%; margin-left: 0; gap: 14px; }
   .nav-links a { font-size: 13px; }
+  .brand img { height: 60px; }
   .field-row { grid-template-columns: 1fr; }
   .panel--summary { position: static; }
   .step-row h3 { flex-basis: 100%; }
